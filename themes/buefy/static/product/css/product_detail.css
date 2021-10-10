@@ -1,0 +1,166 @@
+.is-size {
+  font-size: 14px;
+  color: #666;
+}
+.good-banner {
+  /* width: 380px; */
+  /* border: aqua solid 1px; */
+  position: relative;
+}
+
+.good-images {
+  position: relative;
+  /* background-color: rgb(70, 68, 69); */
+  align-items: center;
+}
+.good-images #left,
+#right {
+  position: absolute;
+  top: 0;
+  width: 25px;
+  height: 100%;
+  margin-top: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  background-size: 12px 22px;
+  line-height: 95px;
+  text-align: center;
+  cursor: pointer;
+}
+.good-images #left:hover,
+#right:hover {
+  background-color: rgba(255, 12, 12, 0.8);
+}
+
+.good-border {
+  background-color: rgba(255, 12, 12, 0.8);
+}
+
+.good-images #left {
+  left: 0;
+}
+
+.good-images #right {
+  right: 0;
+}
+
+.good-images ul {
+  display: flex;
+  margin-left: 25px;
+  overflow: hidden;
+  height: 70px;
+  align-items: center;
+}
+.good-images ul li {
+  width: 70px;
+  height: 70px;
+  border: 2px solid transparent;
+  overflow: hidden;
+  cursor: pointer;
+  flex: none;
+}
+
+.good-images ul li:hover {
+  border-color: red;
+}
+
+.goodbox {
+  display: flex;
+}
+.good-desc {
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+.money-wrapper {
+  height: 78px;
+  /* background: url('../img/money.png') 50%/cover no-repeat; */
+  color: #fff;
+  /* border: solid 1px red; */
+}
+
+.good-num .buy-num {
+  border: 1px solid #d2d2d2;
+  width: 8em;
+  height: 40px;
+  float: left;
+  outline: 0;
+  text-align: center;
+}
+
+.good-num input[type="number"]::-webkit-inner-spin-button,
+.good-num input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+  -webkit-appearance: none;
+}
+
+.good-num .a-btn {
+  float: left;
+  width: 25px;
+  height: 40px;
+  border: 1px solid #d2d2d2;
+  border-left: 0;
+}
+.good-num .a-btn a {
+  float: left;
+  width: 25px;
+  height: 19px;
+  line-height: 19px;
+  text-align: center;
+}
+.good-num .a-btn .btn-reduce {
+  height: 13px;
+  border-top: 1px solid #d2d2d2;
+}
+
+.tabs-wrapper .tabs {
+  height: 56px;
+  line-height: 40px;
+  background: #f7f7f7 !important;
+}
+.tabs-wrapper .tabs ul {
+  border: none;
+}
+.tabs-wrapper .tabs ul li {
+  width: 116px;
+}
+.tabs-wrapper .tabs .is-active a {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAAHCAYAAADZLGlIAAAA2ElEQVRIS2N8aaz8n2EUDJsQYBxWEfofmjYZGYmLIFLVE2fqgKoi0ucD6kaSLH+iIS3MwsW+g5GR0QSfxv///5/58+2nh8yNp29JsmCQKx52EQoK79fqIrz/uPnWMTAyumAN////9zB9/RQkevPN50EePyQ7b1hGKCgUbquosPPx/VvOwMgYiBIq//+v//SJKVL1zp2fJIfWENAwbCMUFPb/GRiYXhspzf7PyJgE4jP+/z9P9Ny9VEYGhn9DIG7IcuKwjlBopDK+MlLqALHFzt2rYATH8/AFAGuTOoSPwSVZAAAAAElFTkSuQmCC)
+  top/100% 7px no-repeat;
+  color: #e93323 !important;
+  border: none;
+}
+.tabs-wrapper .tabs a {
+  border: none;
+  font-size: 14px;
+}
+.tabs-wrapper .tabs a:hover {
+  border: none;
+}
+.tabs-content li {
+  display: none;
+  list-style: none;
+}
+
+.tabs-content li.is-active {
+  display: block;
+}
+
+.b-tabs .tab-content {
+  padding: 1em 0;
+}
+
+/* 多规格样式 */
+.spec-sku .attr {
+  border: rgb(233, 233, 233) solid 1px;
+}
+
+.spec-sku .attr:hover {
+  border: #d81e06 solid 1px;
+  color: #d81e06;
+  cursor: pointer;
+}
+input[type="radio"]:checked + .attr {
+  border: #d81e06 solid 1px;
+  box-sizing: border-box;
+  color: #d81e06;
+  background: url("../images/pa_checked01.png") no-repeat right bottom;
+}

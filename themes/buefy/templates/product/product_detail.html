@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ product.title }}{% endblock %}
+
+{% block seo %}
+<meta name="description" content="{{ product.sub_title }}">
+<meta name="keywords" content="{{ product.title }}">
+{% endblock %}
+
+{% block extrahead %}{{ block.super }}
+<link rel="stylesheet" href="{% static 'product/css/product_detail.css' %}">
+{% endblock %}
+
+{% block hero-body %}
+<nav class="container breadcrumb is-fluid" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="mdi mdi-home" aria-hidden="true"></i>
+                </span>
+                <span>首页</span>
+            </a>
+        </li>
+        {% if product.category.parent %}
+        <li>
+            <a href="{% url 'product:category-detail' product.category.parent.id %}">
+                <span>{{ product.category.parent }}</span>
+            </a>
+        </li>
+        {% endif %}
+        <li>
+            <a href="{% url 'product:category-detail' product.category.id %}">
+                <span>{{ product.category }}</span>
+            </a>
+        </li>
+        <li class="is-active">
+			<a href="">
+				<span>{{ product.title|truncatechars:20 }}...</span>
+			</a>
+		</li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block section %}
+<div class="container mt-4 is-fluid">
+    <div class="columns">
+        <div class="column is-10">
+            {% block product %}
+            <div class="columns">
+                {% include 'product/component/product_banner.html' %}
+                {% include 'product/component/product_price.html' %}
+			</div>
+            {% endblock %}
+            
+            {% block content %}
+            <div id="product-content">
+            {% include 'product/component/product_content.html' %}
+            </div>
+            {% endblock %}
+        </div>
+
+        <div class="column">
+            {% block product-news %}
+                {% include 'product/component/product_new.html' %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block extrafoot %}{{ block.super }}
+<script src="{% static 'vue/common.js' %}"></script>
+{% block spu-js %}
+<script src="{% static 'vue/product-spuc.js' %}"></script>
+{% endblock %}
+<script src="{% static 'vue/product-content.js' %}"></script>
+<script src="{% static 'product/js/product_banner.js' %}"></script>
+{% endblock %}
+    

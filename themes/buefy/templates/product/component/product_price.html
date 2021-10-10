@@ -1,0 +1,60 @@
+<div class="column" id="product-spuc">
+  <h1 class="title is-size-4">{{ product.title }}</h1>
+  <h2 class="subtitle is-size-6">{{ product.sub_title }}</h2>
+  <div class="money-wrapper has-background-primary-dark">
+      <div class="good-price">
+          <div class="pl-5 is-pulled-left">
+              <nav class="level">
+                  <div class="level-item has-text-left">
+                    <div class="mt-1">
+                          <p class="pl-2 heading" style="position: relative; top: 5px;text-decoration: line-through;">
+                              原价：￥{{ product.market_price }}</p>
+                          <p class="title has-text-white">￥{{ product.shop_price }} </p>
+                    </div>
+                  </div>
+                </nav>
+          </div>
+          <div class="pr-5 is-pulled-right">
+              <nav class="level">
+                  <div class="level-item has-text-centered">
+                    <div class="pl-5 mt-3" style="border-left: solid 1px rgba(252, 252, 252, .5);">
+                      <p class="is-size-5 has-text-white">{{ product.sales }}</p>
+                      <p class="heading">销量</p>
+                    </div>
+                  </div>
+              </nav>
+          </div>
+          <div class=" is-clearfix"></div>
+      </div>
+  </div>
+  <div style="position: relative; top:1.5em" >
+      <div class="is-pulled-left" style="line-height: 35px;">数量：</div>
+      <div class="is-pulled-left level is-mobile">
+          <b-field label="" class="mr-2">
+              <b-numberinput v-model="num" id="id_num" name="num"
+                  min="1" type="is-light"
+                  max="{{ product.stock }}" 
+                  controls-position="compact"></b-numberinput>
+          </b-field>
+          <span class="is-size-7 level-item has-text-left" style="line-height: 38px;">
+              库存：<span>{{ product.stock }}</span> </span>
+          
+      </div>
+      <div class="is-clearfix"></div>
+  </div>
+
+  <div class="level is-mobile">
+      <div class="buttons">
+          <b-input type="hidden" value="{{ product.id }}" id="id_goods" name="goods"></b-input>
+          <b-input type="hidden" id="id_sku" name="sku"></b-input>
+          <b-button size="is-medium" type="is-primary"  @click="goodDetailAddCart">
+              加入购物车
+          </b-button>
+          
+          <b-button size="is-medium" type="is-primary is-outlined" @click="productBuyCart">
+              立即购买
+          </b-button>
+          
+      </div>
+  </div>  
+</div>

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block header %}{{ block.super }}{% endblock %}
+{% block hero %}
+{% include 'banner.html' %}
+{% include 'component/index_ad.html' %}
+{% endblock %}

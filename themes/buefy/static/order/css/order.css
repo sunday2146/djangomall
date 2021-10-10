@@ -1,0 +1,22 @@
+html,body{
+    background-color: #f9f9f9;
+}
+.border {
+    border: #ebebeb solid 1px;
+}
+/* 多规格样式 */
+.address .attr {
+    border: rgb(233, 233, 233) solid 1px;
+}
+.address .attr:hover {
+    border: #d81e06 solid 1px;
+    color: #d81e06;
+    cursor: pointer;
+}
+
+input[type="radio"]:checked + .attr {
+    border: #d81e06 solid 1px;
+    box-sizing: border-box;
+    color: #d81e06;
+    background: url("../../product/images/pa_checked01.png") no-repeat right bottom;
+  }

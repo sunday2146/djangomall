@@ -1,0 +1,72 @@
+<template>
+<b-dropdown :triggers="['hover']" position="is-bottom-left" aria-role="menu" trap-focus>
+	<template #trigger>
+		<b-button type="is-warning is-radiusless" icon-left="cart-minus">
+			<span class="pl-3 pr-3 ">购物车({{ cart_num|default:"0" }})</span>
+		</b-button>
+	</template>
+	<b-dropdown-item aria-role="menu-item" :focusable="false" animation="fade" custom paddingless>		
+		<div class="modal-card is-marginless">
+			<section class="modal-card-body">		
+				{% for cart in carts %}
+				<article class="media">
+					<figure class="media-left">
+					  <p class="image is-64x64">	  
+						  {% if cart.spu.spec_type == 1 %}
+						  <img src="{{ MEDIA_URL }}{{ cart.sku.image }}">
+						  {% else %}
+						  <img src="{{ MEDIA_URL }}{{ cart.spu.image }}">
+						  {% endif %}
+					  </p>
+					</figure>
+					<div class="media-content">
+					  <div class="content">
+						<p>
+						  <a class=" has-text-primary-dark" href=" {% url 'product:product-detail' cart.spu.id %}"> 
+							  {{ cart.spu.title|truncatechars:20 }}...</a>
+						  <br>
+							{% if cart.spu.spec_type == 1 %}
+								{% for spec in cart.sku.specs.all %}
+									{{ spec.spec.name }}:
+									{{ spec.option }}	
+								{% endfor %}
+							{% endif %}
+								
+						</p>
+					  </div>
+					</div>
+					<div class="media-right pt-4">
+						{% if cart.spu.spec_type == 1 %}
+						{{ cart.num }} x {{ cart.sku.shop_price }} <button class="delete is-small"></button>
+						{% else %}
+						{{ cart.num }} x {{ cart.spu.shop_price }} <button class="delete is-small"></button>
+						{% endif %}
+					</div>
+				</article>
+				{% endfor %}
+			</section>
+			<footer class="modal-card-foot1 has-background-light p-2">
+				<div class="level">
+					<div class="level-left">
+						<div class="level-item">
+							<div class="pl-5">
+								<p class="heading">共{{ goods_num }}件商品</p>
+								<p class="title has-text-danger-dark">{{ sum_money }} <span class="is-size-6">元</span> </p>
+							</div>
+						</div>
+					</div>
+					<div class="level-right">
+						<div class="level-item">
+							<div class="pr-5">
+								<b-button type="is-primary" tag="a" 
+									href="{% url 'order:cart_create' %}" target="_blank">
+									去购物车结算</b-button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</b-dropdown-item>
+</b-dropdown>
+</template>

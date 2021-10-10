@@ -1,0 +1,45 @@
+{% extends 'users/member/user_info.html' %}
+
+{% block member %}
+<div class="tabs">
+    <ul>
+      <li class="is-active"><a>修改收货地址</a></li>
+    </ul>
+</div>
+
+<form action="" method="post" id="addr_update">
+{% csrf_token %}
+{% for field in form %}
+<div class="field is-horizontal">
+    <div class="field-label">
+        <label for="{{ field.is_for_label }}" class="label">{{ field.label }}</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <p class="control">
+                {{ field }}
+            </p>
+        </div>
+    </div>
+
+</div>
+{% endfor %}
+<div class=" has-text-right">
+<button class="button is-primary" type="submit">保存修改</button>
+</div>
+</form>
+{% endblock %}
+
+{% block extrafoot %}{{ block.super }}
+<script>
+    // 为表单统一设置一个class
+    let addr_inputs = document.querySelectorAll("#addr_update input");
+    for(let i=0; i<=addr_inputs.length; i++){
+        if(addr_inputs[i] && addr_inputs[i].getAttribute("id") !== "id_is_default") {
+            addr_inputs[i].setAttribute("class", "input")
+        } else if (addr_inputs[i] && addr_inputs[i].getAttribute("id") == "id_is_default") {
+            addr_inputs[i].setAttribute("class", "checkbox")
+        }
+    }
+</script>
+{% endblock %}

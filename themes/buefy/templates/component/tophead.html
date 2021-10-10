@@ -1,0 +1,41 @@
+<div class="head has-background-black-ter">
+    <div class="container is-fluid">
+        <nav class="level is-mobile">
+            <!-- Left side -->
+            <div class="level-left">
+                {% block top_head_left %}
+                <a class="level-item" id="addfav">
+                    <span class="icon"><i class="mdi mdi-star-plus-outline"></i></span>
+                    收藏本站
+                </a>
+                {% endblock %}
+            </div>
+        
+            <!-- Right side -->
+            <div class="level-right">
+                {% block top_head_right %}
+                {% if user.is_authenticated %}
+                <p class="level-item">
+                    {% include 'component/top_profile.html' %}
+                </p>
+
+                {% else %}
+                <p class="level-item"><a href="{% url 'users:login' %}">登录</a>
+                    <span class="leo has-text-grey-dark">|</span></p>
+                <p class="level-item"><a>注册</a>
+                    <span class="leo has-text-grey-dark">|</span></p>
+                {% endif %}
+                <!-- <p class="level-item">
+                    <a>
+                    <span class="icon"><i class="mdi mdi-bell-ring-outline"></i></span>
+                    <span> 消息通知</span>
+                    </a>
+                </p> -->
+                <p class="level-item">
+                    {% include 'component/cart.html' %} 
+                </p>
+                {% endblock %}
+            </div>
+        </nav>
+    </div>
+</div>

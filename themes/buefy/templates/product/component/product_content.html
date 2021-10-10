@@ -1,0 +1,86 @@
+<section>
+    <b-tabs v-model="activeTab" animation="slide-prev" type="is-boxed" destroy-on-hide>
+        <b-tab-item label="产品详情">
+            {{ product.content|safe }}
+        </b-tab-item>
+
+        <b-tab-item label="累计评论(1)">
+            <div class="good-rate" >
+                <div class=" is-pulled-left is-size has-text-danger-dark">满意度：0%</div>
+                <div class="rate is-pulled-right">
+                    <span class="is-pulled-left is-size has-text-grey-light" 
+                        style="position: relative; top: -6px;">评分：</span>
+                        <b-rate
+                            v-model="rate"
+                            :icon-pack="packs"
+                            :icon="icons"
+                            :max="maxs"
+                            :size="sizes"
+                            :locale="locale"
+                            :show-score="score"
+                            :custom-text="custom"
+                            :show-text="text"
+                            :texts="texts"
+                            :rtl="isRtl"
+                            :spaced="isSpaced"
+                            :disabled="isDisabled">
+                        </b-rate>
+                    <div class=" is-clearfix"></div>
+                </div>
+                <div class="is-clearfix"></div>
+            </div>
+            <b-tabs type="is-toggle" size="is-small" destroy-on-hide>
+                <b-tab-item label="全部" icon="home">
+                    <article class="media">
+                        <figure class="media-left">
+                          <p class="image is-48x48">
+                            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                          </p>
+                        </figure>
+                        <div class="media-content">
+                          <div class="content">
+                            <p>
+                              <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
+                              <br>
+                              <span class="is-size"> 还啊很多双卡双待卡号是打开就哈撒可见度哈克觉得是哈可接受的和卡号的卡号是的卡号是看见啥看见大海上的看见哈斯卡号是看见哈撒可见度蛤科进士蛤科进士蛤科进士蝴蝶卡和的卡号是的卡是 </span> 
+                            </p>
+                          </div>
+                          <nav class="level is-mobile">
+                            <div class="level-left">
+                              <a class="level-item">
+                                <p class="image is-48x48">
+                                    <img src="https://bulma.io/images/placeholders/128x128.png">
+                                </p>
+                              </a>
+                              <a class="level-item">
+                                <p class="image is-48x48">
+                                    <img src="https://bulma.io/images/placeholders/128x128.png">
+                                </p>
+                              </a>
+                              <a class="level-item">
+                                <p class="image is-48x48">
+                                    <img src="https://bulma.io/images/placeholders/128x128.png">
+                                </p>
+                              </a>
+                              <a class="level-item">
+                                <p class="image is-48x48">
+                                    <img src="https://bulma.io/images/placeholders/128x128.png">
+                                </p>
+                              </a>
+                              
+                            </div>
+                          </nav>
+                        </div>
+                    </article>
+                </b-tab-item>
+                <b-tab-item label="好评" icon="thumb-up-outline"></b-tab-item>
+                <b-tab-item label="中评" icon="heart-outline"></b-tab-item>
+                <b-tab-item label="差评" icon="thumb-down-outline"></b-tab-item>
+            </b-tabs>
+        </b-tab-item>
+
+        <b-tab-item :visible="showBooks" label="Books">
+                隐藏的切换框
+        </b-tab-item>
+    </b-tabs>
+</section>

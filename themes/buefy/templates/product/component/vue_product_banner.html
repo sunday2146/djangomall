@@ -1,0 +1,37 @@
+<!-- banner -->
+<div class="column is-5">
+    <div class="good-banner" id="goodbanner">
+        <figure class="image is-1by1">
+            <img id="MainPicture" :src="default_image" :alt="storeInfo.title">
+        </figure>
+        <div class="mt-1 good-images">
+            <div id="left">
+                <span class="icon is-size-1 has-text-white is-family-code">
+                    <i class="mdi mdi-chevron-left"></i>
+                </span>
+            </div>
+            <div id="right">
+                <span class="icon is-size-1 has-text-white is-family-code" style="font-weight: normal;">
+                    <i class="mdi mdi-chevron-right"></i>
+                </span>
+            </div>
+            <ul id="GoodsBanners">
+                <li class="mr-1">
+                    <img :src="storeInfo.image" @mouseover="defaultImageUrl()" :alt="storeInfo.title">
+                </li>
+                
+                <li class="mr-1" v-for="(itm, i) in storeInfo.slider_image">
+                    <img id="goodImg" :src="itm" @mouseover="getImageUrl(i)" :alt="storeInfo.title" srcset="">
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+    <div class="mt-3" v-cloak>
+        <a class="button is-danger is-outlined is-small" @click="addfav">
+            <span class="icon"><i class="mdi mdi-star-settings-outline"></i></span>
+            <span>[[ text ]]</span>
+        </a>
+    </div>  
+</div>
+<!-- banner end-->

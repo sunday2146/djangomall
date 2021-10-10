@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+个人中心
+{% endblock %}
+
+{% block hero-body %}
+<nav class="container breadcrumb is-fluid" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="mdi mdi-home" aria-hidden="true"></i>
+                </span>
+                <span>首页</span>
+            </a>
+        </li>
+        <li class="is-active">
+            <a href="">
+                <span>我的个人中心</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block section %}
+<section class="mt-4" id="userinfo">
+    <div class="container is-fluid">
+        <div class="columns">
+        <div class="column is-2">
+            <div class="box">
+            <template>
+                <b-menu>
+                    <b-menu-list label="我的" >
+                        <b-menu-item label="我的订单" tag="a" href="{% url 'users:orders' request.user.id %}" 
+                            {% if 'orders' in request.path_info or 'orderDetail' in request.path_info %}active{% endif %}>
+                        </b-menu-item>
+                        <b-menu-item label="我的收藏" tag="a" href="{% url 'users:fav_list' request.user.id %}" {% if 'fav' in request.path_info %}active{% endif %}></b-menu-item>
+                        <b-menu-item label="我的地址" tag="a" href="{% url 'users:address' request.user.id %}"
+                            {% if 'address' in request.path_info %}active{% endif %}></b-menu-item>
+                        {% comment %}
+                        <b-menu-item icon="settings" :active="isActive" expanded>
+                            <template #label="props">
+                                个人中心
+                                <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-up' : 'menu-down'">
+                                </b-icon>
+                            </template>
+                            <b-menu-item icon="account" label="Users"></b-menu-item>
+                            <b-menu-item icon="cellphone-link">
+                                <template #label>
+                                    Devices
+                                    <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
+                                        <template #trigger>
+                                            <b-icon icon="dots-vertical"></b-icon>
+                                        </template>
+                                        <b-dropdown-item aria-role="listitem">Action</b-dropdown-item>
+                                        <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
+                                        <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
+                                    </b-dropdown>
+                                </template>
+                            </b-menu-item>
+                            <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>
+                        </b-menu-item>
+                        <b-menu-item icon="account" label="我的订单">
+                            <b-menu-item label="Account data" ></b-menu-item>
+                            <b-menu-item label="Addresses"></b-menu-item>
+                        </b-menu-item>
+                        {% endcomment %}
+                    </b-menu-list>
+
+                    <b-menu-list label="咨询">
+                        <b-menu-item label="留言咨询"></b-menu-item>
+                        <b-menu-item label="咨询回复"></b-menu-item>
+                    </b-menu-list>
+                    
+                    <b-menu-list label="设置">
+                        <b-menu-item label="账号设置" tag="a" href=" {% url 'users:member' request.user.id %}" 
+                            {% if 'profile' in request.path_info %}active{% endif %}></b-menu-item>
+                        <b-menu-item label="找回密码"></b-menu-item>
+                    </b-menu-list>
+                </b-menu>
+            </template>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box">
+                
+                {% block member %}
+                <div class="columns is-mobile" style="border-bottom: #ededed solid 1px; padding-bottom: 1rem">
+                    <div class="column is-narrow">
+                        <figure class="image is-96x96">
+                            
+                            {% if user.userinfo.avatar %}
+                                <img class="is-rounded" src="{{ MEDIA_URL }}{{ user.userinfo.avatar }}">
+                                {% else %}
+                                <img class="is-rounded" src=" {% static 'users/images/avatar.png' %}">
+                            {% endif %}
+                        </figure>
+                    </div>
+                    <div class="column is-narrow">
+                        <div style="padding-top: 1.5rem;">
+                            
+                            {% if user.userinfo.nickname %}
+                                <h1 class="title is-size-4">{{ user.userinfo.nickname }}</h1>
+                                {% else %}
+                                <h1 class="title is-size-4">{{ user.username }}</h1>
+                            {% endif %}
+                                
+                            
+                            {% if user.userinfo.signature %}
+                                <p class="subtitle is-size-6">{{ user.userinfo.signature }}</p>
+                                {% else %}
+                                <p class="subtitle is-size-6">暂未设置个性签名</p>
+                            {% endif %}
+                                
+                                
+                        </div>
+                    </div>
+                    <div class="column is-narrow-mobile">
+                        <a class=" button is-light is-pulled-right" href="" style="margin-top: 1.8rem">修改信息</a>
+                    </div>
+                </div>    
+                
+                <div class="columns" style="padding:1rem 0; ">
+                    <div class="column is-2">
+                        <p>个人信息</p>  
+                    </div>
+                    <div class="column">
+                        <div class="columns is-mobile" style="border-bottom: #ededed solid 1px">
+                            <div class="column is-2">
+                               <span class=" has-text-grey-light">昵称</span> 
+                            </div>
+                                <div class="column is-narrow">
+                                    {% if user.userinfo.nickname %}
+                                    <span class=" has-text-black-ter">{{ user.userinfo.nickname }}</span>
+                                    {% else %}
+                                    <span class=" has-text-black-ter">暂未设置用户昵称</span>
+                                    {% endif %}
+                                  
+                                </div>
+                            <!-- <div class="column has-text-right">
+                                <a href="">更改类型</a>
+                            </div> -->
+                                    
+                        </div>
+                        <div class="columns is-mobile" style="border-bottom: #ededed solid 1px">
+                            <div class="column is-2">
+                               <span class=" has-text-grey-light">手机</span> 
+                            </div>
+                            <div class="column is-narrow">
+                                {% if user.userinfo.mobile %}
+                                <span class=" has-text-black-ter">{{ user.userinfo.mobile }}</span>
+                                {% else %}
+                                <span class=" has-text-black-ter">暂未设置</span>
+                                {% endif %} 
+                            </div>
+                            
+                        </div>
+                        <div class="columns is-mobile" style="border-bottom: #ededed solid 1px">
+                            <div class="column is-2">
+                               <span class=" has-text-grey-light">邮箱</span> 
+                            </div>
+                            <div class="column is-narrow">
+                                <span class=" has-text-black-ter">{{ request.user.email }}</span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="columns is-mobile" style="border-bottom: #ededed solid 1px">
+                            <div class="column is-2">
+                               <span class=" has-text-grey-light">地址</span> 
+                            </div>
+                            <div class="column is-narrow">
+                                {% if user.userinfo %}
+                                <span class=" has-text-black-ter">{{ user.userinfo.default_address }}</span>
+                                {% else %}
+                                <span class=" has-text-black-ter">暂未添加地址</span>
+                                {% endif %}
+                               
+                            </div>
+                             
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columns" style="padding:1rem 0; ">
+                    <div class="column is-2">
+                        <p>个人简介</p>  
+                    </div>
+                    <div class="column">
+                        <div class="content">
+                            {% if user.userinfo.desc %}
+                            {{ user.userinfo.desc}}
+                            {% else %}
+                            暂未设置
+                            {% endif %}
+                           
+                        </div>
+                    </div>
+                </div>
+                {% endblock %}
+                    
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block extrafoot %}{{ block.super }}
+<script src="{% static 'vue/common.js' %}"></script>
+<script>
+    var userinfo = new Vue({
+        el: "#userinfo",
+        delimiters: ['[[', ']]'],
+        data: {
+            isActive: true,
+            activeTab: 0,
+            showBooks: false,
+            active: false,
+            labelPosition: 'on-border',
+            // 表单数据绑定
+            province: '',
+            city: '',
+            district:'',
+            address:'',
+            signer_name:'',
+            signer_mobile: '',
+            email:'',
+            is_default:'',
+            // 订单步骤
+            hasNavigation: false,
+            activeStep: 2,
+            // pay_status: pay_status
+        },
+        methods: {
+            moveinaddr() {
+                console.log('进入')
+            },
+            moveoutaddr() {
+                console.log('移出')
+            },
+            addAddressModal(){
+                this.active = true
+            },
+            closeAddressModal(){
+                // 关闭modal并清空输入框
+                this.active = false;
+            },
+            saveAddressModal(){
+                // 保存地址
+                let sendData = new URLSearchParams()
+                sendData.append('province', this.province);
+                sendData.append('city', this.city);
+                sendData.append('district', this.district);
+                sendData.append('address', this.address);
+                sendData.append('signer_name', this.signer_name);
+                sendData.append('signer_mobile', this.signer_mobile);
+                sendData.append('email', this.email);
+                sendData.append('is_default', this.is_default);
+                let url = "/users/create/address/";
+                axios.post(url, sendData, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    }
+                }).then(res => {
+                    // this.closeAddressModal()
+                    console.log(res.data)
+                    this.active = false;
+                    // window.location.reload();
+                    if (res.data.status == 200 && res.data.code == 'ok') {
+                        this.$buefy.toast.open({
+                            duration: 2000,
+                            message: res.data.message,
+                            type: 'is-success'
+                        });
+                        setTimeout("window.location.reload()", 2000)
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+
+            deleteAddress(){
+                // 保存地址
+                let sendData = new URLSearchParams()
+                
+            }
+        },
+
+
+        mounted() {
+            // 更改订单状态
+            if (!document.querySelector("#pay-status")) return;
+            let pay_status = document.querySelector("#pay-status").value;
+            switch (Number(pay_status)) {
+                case 1:
+                    this.activeStep = 0;
+                    break;
+                case 2:
+                    this.activeStep = 1;
+                    break;
+                case 3:
+                    this.activeStep = 2;
+                    break;
+                case 4:
+                    this.activeStep = 3;
+                    break;
+                case 5:
+                    this.activeStep = 4;
+                    break;
+            }
+        },
+    })
+</script>
+{% endblock %}

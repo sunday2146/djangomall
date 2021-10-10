@@ -1,0 +1,45 @@
+<template>
+    <section>
+        <b-field grouped group-multiline>
+            <b-button
+                label="Clear checked"
+                type="is-danger"
+                icon-left="close"
+                class="field"
+                @click="checkedRows = []" />
+
+            <b-select v-model="checkboxPosition">
+                <option value="left">Checkbox at left</option>
+                <option value="right">Checkbox at right</option>
+            </b-select>
+        </b-field>
+
+        <b-tabs>
+            <b-tab-item label="Table">
+                <b-table
+                    :data="data"
+                    :columns="columns"
+                    :checked-rows.sync="checkedRows"
+                    :is-row-checkable="(row) => row.id !== 3 && row.id !== 4"
+                    checkable
+                    :checkbox-position="checkboxPosition">
+
+                    <template #bottom-left>
+                        
+                        {% verbatim %}
+                        <b>Total checked</b>: {{ checkedRows.length }}
+                        {% endverbatim %}
+                    </template>
+                </b-table>
+            </b-tab-item>
+
+            <b-tab-item label="Checked rows">
+                
+                {% verbatim %}
+                <pre>{{ checkedRows }}</pre>
+                {% endverbatim %}
+                    
+            </b-tab-item>
+        </b-tabs>
+    </section>
+</template>

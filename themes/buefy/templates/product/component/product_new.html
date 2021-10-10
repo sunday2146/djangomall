@@ -1,0 +1,25 @@
+<div class="card is-shadowless" style="border: solid 1px rgb(236, 236, 236);background: none;">
+    <header class="card-header is-shadowless" style="border-bottom: solid 1px rgb(236, 236, 236);">
+      <p class="card-header-title is-centered">
+        新品推荐
+      </p>
+    </header>
+    <div class="card-content">
+      {% for good in product_news %}
+        <div class="mb-3 newgood">
+        <a href=" {% url 'product:product-detail' good.id %}">
+            <figure class="image is-1by1">
+                <img src="{{ MEDIA_URL }}{{ good.image }}" alt="{{ good.title }}">
+            </figure>
+            <h1 class="pt-3 is-size">{{ good.title|truncatechars:10 }}...</h1>
+            <div class="pt-1 is-mobile">
+                <div class="is-pulled-left has-text-danger-dark has-text-weight-medium"> 
+                    <span class="is-size-7">￥</span>{{ good.shop_price }}</div>
+                <div class=" is-pulled-right is-size-7 has-text-grey-light">销量 {{ good.sales }}</div>
+                <div class=" is-clearfix"></div>
+            </div>
+        </a>
+        </div>
+      {% endfor %}
+    </div>
+</div>

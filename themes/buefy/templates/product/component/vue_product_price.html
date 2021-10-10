@@ -1,0 +1,81 @@
+<div class="column">
+	<h1 class="title is-size-4">{{ product.title }}</h1>
+	<h2 class="subtitle is-size-6">{{ product.sub_title }}</h2>
+
+	<!-- 价位 -->
+	<div class="money-wrapper has-background-primary-dark">
+		<div class="good-price">
+			<div class="pl-5 is-pulled-left">
+				<nav class="level">
+					<div class="level-item has-text-left">
+					  <div class="mt-1">
+							<p class="pl-2 heading" style="position: relative; top: 5px;text-decoration: line-through;">
+								原价：￥[[ market_price ]]</p>
+							<p class="title has-text-white">￥[[ shop_price ]] </p>
+					  </div>
+					</div>
+				  </nav>
+			</div>
+			<div class="pr-5 is-pulled-right">
+				<nav class="level">
+					<div class="level-item has-text-centered">
+					  <div class="pl-5 mt-3" style="border-left: solid 1px rgba(252, 252, 252, .5);">
+						<p class="is-size-5 has-text-white">[[ sales ]]</p>
+						<p class="heading">销量</p>
+					  </div>
+					</div>
+				</nav>
+			</div>
+			<div class=" is-clearfix"></div>
+		</div>
+	</div>
+
+	<div class="box">
+		<!-- 规格 -->
+		<div class="spec-sku mb-5 ">
+			<div id="specs" style="display: none;">{{ spec_json }}</div>
+			<div id="spec_sku" style="display: none;">{{ spec_sku_json }}</div>
+			<div v-for="(item, index) in {{spec_json}}" :key="index" style="line-height: 2.5em;">
+				<div class="is-size is-pulled-left mr-4">[[ item.spec_name ]]:</div>
+				<div class="acea-row list">
+					<label v-for="(itm, idx) in item.spec_options" :key="idx" class="mr-2">
+						<input v-model="attrSelected[index]" type="radio" :name="index" :value="itm" :checked="!idx" hidden />
+						<span class="pt-1 pb-1 pl-4 pr-4 attr">[[ itm ]]</span>
+					</label>
+					<div class="is-clearfix"></div>
+				</div>
+				<div class="is-clearfix"></div>
+			</div>
+		</div>
+
+		<!-- 数量 -->
+		<div class="price-num mb-1" style="height: 45px;">
+			<div class="is-pulled-left is-size" style="line-height: 35px;">数量：</div>
+			<div class="is-pulled-left level is-mobile">
+				<b-field class="mr-2">
+					<b-numberinput v-model="num" id="id_num"
+						:min="min" type="is-light"
+						:max="stock" 
+						controls-position="compact"></b-numberinput>
+				</b-field>
+				<span class="is-size-7 level-item has-text-left">
+					库存：<span>[[ stock ]]</span> </span>
+			</div>
+			<div class="is-clearfix"></div>
+		</div>
+	</div>
+	
+	<div class="level is-mobile">
+		<!-- <div class="level-left"></div> -->
+		<div class="level-right">
+		<div class="buttons">
+			<b-button size="is-medium" type="is-danger" :disabled="!stock" @click="productDetailAddCart()">
+				加入购物车
+			</b-button>
+			<b-button size="is-medium" type="is-danger is-outlined" :disabled="!stock" @click="productDetailBuyNow">
+				立即购买
+			</b-button>
+		</div>
+		</div>
+	</div>  
+</div>

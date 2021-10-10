@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extrahead %}{{ block.super }}
+<link rel="stylesheet" href="{% static 'order/css/order.css' %}">
+{% endblock %}
+
+{% block hero-body %}
+<div class="container is-fluid">
+    <p class="title">
+        立即下单
+    </p>
+    <p class="subtitle">
+        商品数量有限，请及时支付！
+    </p>
+</div>
+{% endblock %}
+
+{% block section %}
+<div class="container mt-4" id="buynow">
+    {% if cart_product.message %}
+    <article class="message is-danger">
+        <div class="message-header">
+            <p>发生错误了，该商品似乎不存在哦！</p>
+            <button class="delete" aria-label="delete"></button>
+        </div>
+        <div class="message-body">
+            {{ cart_product.message }}
+        </div>
+    </article>
+    {% else %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <!-- 收货地址 -->
+        <div class="card is-shadowless">
+            <header class="card-header">
+                <p class="card-header-title">
+                    收货地址
+                </p>
+                <button class="card-header-icon" aria-label="more options">
+                    <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </header>
+            <div class="card-content">
+                <div class="address columns">
+                    {% if address %}
+                    {% for addr in address %}
+                    <label class="column is-3">
+                        <input type="radio" name="address" id="address_{{ addr.id }}" value="{{ addr.id }}" {% if addr.is_default %}checked{% endif %} hidden>
+                        <div class="attr p-5">
+                            {% if addr.is_default %}
+                            <span class="tag is-primary">默认</span>
+                            {% endif %}
+                            {{ addr.signer_name }}{{ addr.signer_mobile }}
+                            <p class="has-text-grey-dark">
+                                {{ addr.province }}{{ addr.city }}{{ addr.district }}{{ addr.address }}
+                            </p>
+                        </div>
+                    </label>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 支付方式 -->
+        <div class="card is-shadowless">
+            <header class="card-header">
+                <p class="card-header-title">
+                    支付方式
+                </p>
+                <button class="card-header-icon" aria-label="more options">
+                    <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </header>
+            <div class="card-content">
+                <div>
+                    {% for key, value in pay_method.items %}
+                    <label class="mr-3 radio" {% if key != 2 %}disabled{% endif %}>
+                        <input type="radio" name="pay_method" id="pay_method_{{ key }}" value="{{ key }}"  {% if key != 2 %}disabled{% endif %}  {% if pay_default == key %}checked{% endif %}>
+                        {{ value }}
+                    </label>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="box is-shadowless has-background-white mt-4">
+            <h1 class="is-size-5 mb-2">订单信息:</h1>
+            <div class="box is-shadowless border">
+                <div class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <figure class="image">
+                                <img src="{{ MEDIA_URL }}{{ cart_product.spu.image }}" alt="" style="width: 100px;">
+                            </figure>
+                        </div>
+                        <div class="level-item">
+                            {{ cart_product.spu.title }} <br>
+                            {% if cart_product.sku %}
+                            {% for spec in cart_product.sku.specs.all %}
+                            {{ spec.spec.name }}:
+                            {{ spec.option }}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="level-right">
+                        <div class="level-item pr-6">
+                            {% if cart_product.sku %}
+                                {{ cart_product.num }}{{ cart_product.spu.product_unit }} x {{ cart_product.sku.shop_price }}
+                            {% else %}
+                                {{ cart_product.num }}{{ cart_product.spu.product_unit }} x {{ cart_product.spu.shop_price }}
+                            {% endif %}
+                        </div>
+                        <div class="level-item pl-5">
+                            <strong class="has-text-danger-dark is-size-5">{{ total_price }}</strong>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="box has-text-right is-shadowless">
+                <div class="columns">
+                    <div class="column is-10">
+                        <ul>
+                            <li>{{ cart_product.num }}件商品,总商品金额：</li>
+                            <li>运费：</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <ul>
+                            <li class=" has-text-right ">¥{{ total_price }}</li>
+                            <li class=" has-text-right ">¥{{ freight }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="columns has-background-light">
+                    <div class="column is-10">
+                        <label style="line-height: 2.5em;">应付总金额：</label>
+                    </div>
+                    <div class="column">
+                        <span class="is-size-4 has-text-weight-bold has-text-danger-dark">
+                            ¥{{ total }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <b-field label="订单备注" :label-position="labelPosition">
+            <b-input maxlength="200" type="textarea" placeholder="有特殊要求，请务必备注说明!" name="order_mark" id="id_order_mark">
+            </b-input>
+        </b-field>
+        <input class="button is-primary is-pulled-right pl-6 pr-6" type="submit" value="提交订单">
+        <div class="is-clearfix"></div>
+</div>
+
+</form>
+{% endif %}
+
+</div>
+{% endblock %}
+
+
+{% block extrafoot %}{{ block.super }}
+<script>
+    var buynow = new Vue({
+        el: "#buynow",
+        delimiters: ['[[', ']]'],
+        data: {
+            // radio: '',
+            labelPosition: 'on-border'
+        }
+    })
+</script>
+{% endblock %}

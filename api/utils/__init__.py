@@ -1,0 +1,1 @@
+from .base_serializer import BaseOwnerSerializer, BaseOwnerModelSerializer

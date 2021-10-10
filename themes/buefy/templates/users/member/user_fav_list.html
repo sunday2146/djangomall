@@ -1,0 +1,36 @@
+{% extends 'users/member/user_info.html' %}
+
+{% block member %}
+<div class="tabs">
+    <ul>
+      <li class="is-active"><a>我的收藏</a></li>
+    </ul>
+</div>
+
+
+{% for fav in fav_list %}
+    
+
+    <article class="media pt-4">
+        <figure class="media-left">
+            <p class="image is-96x96">
+                <img src="{{ MEDIA_URL }}{{ fav.content_object.image }}">
+            </p>
+        </figure>
+        <div class="media-content">
+            <div class="content">
+                <div>
+                    <p class="is-size">
+                        <a class=" has-text-grey-dark" href="{% url 'product:product-detail' fav.content_object.id %}" target="_blank">
+                            {{ fav.content_object.title }}</a></p>
+                    <p class="is-size has-text-grey-light"> {{ fav.content_object.sub_title }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="media-right">
+            <a class="button is-primary is-outlined is-small" href="{% url 'users:fav_delete' request.user.id fav.id %}">删除收藏</a>
+        </div>
+    </article>
+{% endfor %}
+    
+{% endblock %}

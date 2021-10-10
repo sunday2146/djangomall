@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category }}{% endblock %}
+{% block seo %}
+<meta name="description" content="{{ category }}">
+<meta name="keywords" content="{{ category }}">
+{% endblock %}
+
+{% block hero-body %}
+<nav class="container breadcrumb is-fluid" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="mdi mdi-home" aria-hidden="true"></i>
+                </span>
+                <span>首页</span>
+            </a>
+        </li>
+        {% if category.parent %}
+        <li>
+            <a href="{% url 'product:category-detail' category.parent.id %}">
+                <span>{{ category.parent }}</span>
+            </a>
+        </li>
+        {% endif %}
+        <li class="is-active">
+            <a href="{% url 'product:category-detail' category.id %}">
+                <span>{{ category }}</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block section %}
+<div class="container is-fluid">
+<div class="box has-background-white mt-3">
+    {% block sort %}
+    <div class="sort" style="font-size: 14px;">
+        <ul>
+            {% if sub_categories %}
+            <li class="has-text-grey-light is-pulled-left">{{ category }}：</li>
+            {% for cate in sub_categories %}
+            <li class="mr-4 is-pulled-left">
+                <a class="{% if category.id == cate.id %}has-text-grey-dark{% endif %}"
+                    href=" {% url 'product:category-detail' cate.id %}">{{ cate.name }}</a>
+            </li>
+            {% endfor %}
+            {% else %}
+            <li class="has-text-grey-light is-pulled-left">{{ category.parent }}：</li>
+            {% for cate in category.parent.sub_cate.all %}
+            <li class="mr-4 is-pulled-left">
+                <a class="{% if category.id == cate.id %}has-text-grey-dark{% endif %}"
+                    href=" {% url 'product:category-detail' cate.id %}">{{ cate.name }}</a>
+            </li>
+            {% endfor %}
+            {% endif %}
+            <div class="is-clearfix"></div>
+        </ul>
+        <hr class="mt-2 mb-2 is-marginless">
+        <ul>
+            <li class="has-text-grey-light is-pulled-left">排序：</li>
+            <li class="mr-4 is-pulled-left">
+                <a class="{% if sort == '' %} has-text-grey-dark{% endif %}"
+                    href=" {% url 'product:category-detail' category.id %}">默认</a>
+            </li>
+            <li class="mr-4 is-pulled-left">
+                <a class="{% if sort == 'sales' %}  has-text-grey-dark{% endif %}"
+                    href="?sort=sales">销量</a>
+            </li>
+            <li class="mr-4 is-pulled-left">
+                <a class="{% if sort == 'shop_price' %} has-text-grey-dark{% endif %}" href="?sort=shop_price">价格</a>
+            </li>
+            <li></li>
+            <div class="is-clearfix"></div>
+        </ul>
+    </div>
+    {% endblock %}
+</div>
+
+<div class="columns is-multiline">
+    {% if sku %}
+    {% for good in sku %}
+    <div class="column is-4-tablet is-4-desktop is-3-widescreen is-3-fullhd">
+        <a class="box" style="position: relative;" href="{% url 'product:product-detail' good.id %}">
+            {% if good.is_hot and good.is_benefit %}
+            <div class="tags has-addons is-pulled-right" style="position: absolute; top: 0; left: 0; z-index: 10;">
+                <span class="tag is-primary">促销</span>
+                <span class="tag is-danger">热销</span>
+            </div>
+            {% elif good.is_new and good.is_benefit %}
+            <div class="tags has-addons is-pulled-right" style="position: absolute; top: 0; left: 0; z-index: 10;">
+                <span class="tag is-primary">新品</span>
+                <span class="tag is-danger">促销</span>
+            </div>
+            {% elif good.is_hot %}
+            <div class="tags has-addons is-pulled-right" style="position: absolute; top: 0; left: 0; z-index: 10;">
+                <!-- <span class="tag">Package</span> -->
+                <span class="tag is-danger">热销</span>
+            </div>
+            {% elif good.is_benefit %}
+            <div class="tags has-addons is-pulled-right" style="position: absolute; top: 0; left: 0; z-index: 10;">
+                <!-- <span class="tag">Package</span> -->
+                <span class="tag is-primary">促销</span>
+            </div>
+            {% endif %}
+            <figure class="image is-square">
+                <img src="{{ MEDIA_URL }}{{ good.image }}" alt="" srcset="">
+            </figure>
+
+
+            <h1 class="pt-3 pb-1 has-text-weight-medium is-size-4 has-text-danger-dark is-family-primary">
+                ¥{{ good.shop_price }}</h1>
+            <h2 class="is-family-secondary" style="font-size: 14px;">
+                {{ good.title|truncatechars:25 }}
+            </h2>
+            <div class="mt-2 foot">
+                <div class=" is-pulled-left is-size-7 has-text-grey-light">{{ good.sales }}人付款</div>
+                <div class=" is-pulled-right is-size-7 has-text-grey-light">5.0分</div>
+                <div class="is-clearfix"></div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+</div>
+{% endblock %}
+
+
+
+
+

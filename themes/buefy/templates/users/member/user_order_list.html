@@ -1,0 +1,676 @@
+{% extends 'users/member/user_info.html' %}
+{% load alipay_url %}
+
+{% block member %}
+<template>
+    <section>
+        <b-tabs v-model="activeTab">
+            <b-tab-item label="全部订单">
+                {% for order in order_list %}
+                <div class="pt-31">
+                    <span>订单日期： {{ order.add_date }}</span>
+                    {% for product in order.dmallorderproduct_set.all %}
+                    <article class="media pt-4">
+                        <figure class="media-left">
+                            <p class="image is-96x96">
+                                <img src="{{ MEDIA_URL }}{{ product.spu.image }}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <div>
+                                    <p class="is-size">
+                                        <a class=" has-text-grey-dark" href="{% url 'product:product-detail' product.spu.id %}" target="_blank">
+                                            {{ product.spu.title }}</a></p>
+                                    <p class="is-size">
+                                        {% if product.spu.spec_type == 1 %}
+                                        {% for spec in product.sku.specs.all %}
+                                        <span class="pr-4">
+                                            <span class="has-text-grey">{{ spec.spec.name }}:</span>
+                                            {{ spec.option }}
+                                        </span>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                  <a class="level-item has-text-danger-dark">
+                                    {% if product.spu.spec_type == 1 %}
+                                    ¥{{ product.sku.shop_price }} x {{ product.count }}
+                                    {% else %}
+                                    ¥{{ product.spu.shop_price }} x {{ product.count }} 
+                                    {% endif %}
+                                  </a>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="media-right">
+                            <span class=" has-text-danger-dark">{{ order.get_pay_status_display }}</span>
+                        </div>
+                        
+                    </article>
+                    {% endfor %}
+                </div>
+                <hr/>
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <!-- 共{{ order.counts }}件商品， -->
+                        总金额 ¥{{ order.total_amount }} (含运费{{ order.freight }})
+                    </div>
+                    
+                    {% if order.pay_status != 6 %}
+                    <div class="level-right">
+                        {% if order.pay_status == 1 %}
+                        <a class="level-item button is-small is-info is-outlined" href="{% alipay_url order.order_sn %}" target="_blank">
+                            <span class="pr-3 pt-1 pl-2">
+                            <svg t="1632459990510" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2407" width="32" height="32"><path d="M1023.795 853.64v6.348a163.807 163.807 0 0 1-163.807 163.807h-696.18A163.807 163.807 0 0 1 0 859.988v-696.18A163.807 163.807 0 0 1 163.807 0h696.181a163.807 163.807 0 0 1 163.807 163.807V853.64z" fill="#009FE9" p-id="2408"></path><path d="M844.836 648.267c-40.952-14.333-95.623-34.809-156.846-57.128a949.058 949.058 0 0 0 90.094-222.573H573.325V307.14h245.711v-43.41l-245.71 2.458V143.33H472.173c-18.223 0-21.704 20.476-21.704 20.476v102.38H204.759v40.952h245.71v61.427H245.712v40.952h409.518a805.522 805.522 0 0 1-64.909 148.246c-128.384-42.795-266.186-77.604-354.233-55.08a213.564 213.564 0 0 0-112.003 63.27c-95.418 116.917-26.21 294.034 175.274 294.034 119.989 0 236.087-67.366 325.771-177.73 134.322 65.932 398.666 176.297 398.666 176.297V701.3s-32.352-4.095-178.96-53.033z m-563.702 144.97c-158.893 0-204.759-124.699-126.336-194.112a191.86 191.86 0 0 1 90.913-46.276c93.575-10.238 189.811 35.629 293.624 86.614-74.941 94.598-166.674 153.774-258.2 153.774z" fill="#FFFFFF" p-id="2409"></path></svg>
+                            </span>
+                            支付宝支付
+                        </a>
+                        {% elif order.pay_status == 3 %}
+                        <a class="level-item button is-small is-primary">
+                            <!-- <span class="icon is-small"><i class="fas fa-reply"></i></span> -->
+                            确认收货
+                        </a>
+                        {% elif order.pay_status == 4 %}
+                        <a class="level-item button is-small is-primary is-outlined">
+                            再次购买
+                        </a>
+                        <a class="level-item button is-small is-primary">
+                            去评价
+                        </a>
+                        {% endif %}
+                        <a class="level-item button is-small" href="{% url 'users:order_detail' request.user.id order.id %}">
+                            查看详情
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="level-right">
+                        <div class="level-item">
+                            <!-- <a class="level-item button is-small is-primary">
+                                重新下单
+                            </a> -->
+                            <span class="has-text-danger-dark">该订单已失效，如需重新购买，请点击商品标题快速下单！</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </nav>
+                <hr />
+                {% endfor %}
+            </b-tab-item>
+
+            <b-tab-item label="待付款">
+                {% for order in not_pay_orders %}
+                <div class="pt-31">
+                    <span>订单日期： {{ order.add_date }}</span>
+                    {% for product in order.dmallorderproduct_set.all %}
+                    <article class="media pt-4">
+                        <figure class="media-left">
+                            <p class="image is-96x96">
+                                <img src="{{ MEDIA_URL }}{{ product.spu.image }}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <div>
+                                    <p class="is-size">
+                                        <a class=" has-text-grey-dark" href="{% url 'product:product-detail' product.spu.id %}" target="_blank">
+                                            {{ product.spu.title }}</a></p>
+                                    <p class="is-size">
+                                        {% if product.spu.spec_type == 1 %}
+                                        {% for spec in product.sku.specs.all %}
+                                        <span class="pr-4">
+                                            <span class="has-text-grey">{{ spec.spec.name }}:</span>
+                                            {{ spec.option }}
+                                        </span>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                  <a class="level-item has-text-danger-dark">
+                                    {% if product.spu.spec_type == 1 %}
+                                    ¥{{ product.sku.shop_price }} x {{ product.count }}
+                                    {% else %}
+                                    ¥{{ product.spu.shop_price }} x {{ product.count }} 
+                                    {% endif %}
+                                  </a>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="media-right">
+                            <span class=" has-text-danger-dark">{{ order.get_pay_status_display }}</span>
+                        </div>
+                        
+                    </article>
+                    {% endfor %}
+                </div>
+                <hr/>
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <!-- 共{{ order.counts }}件商品， -->
+                        总金额 ¥{{ order.total_amount }} (含运费{{ order.freight }})
+                    </div>
+                    
+                    {% if order.pay_status != 6 %}
+                    <div class="level-right">
+                        {% if order.pay_status == 1 %}
+                        <a class="level-item button is-small is-info is-outlined" href="{% alipay_url order.order_sn %}" target="_blank">
+                            <span class="pr-3 pt-1 pl-2">
+                            <svg t="1632459990510" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2407" width="32" height="32"><path d="M1023.795 853.64v6.348a163.807 163.807 0 0 1-163.807 163.807h-696.18A163.807 163.807 0 0 1 0 859.988v-696.18A163.807 163.807 0 0 1 163.807 0h696.181a163.807 163.807 0 0 1 163.807 163.807V853.64z" fill="#009FE9" p-id="2408"></path><path d="M844.836 648.267c-40.952-14.333-95.623-34.809-156.846-57.128a949.058 949.058 0 0 0 90.094-222.573H573.325V307.14h245.711v-43.41l-245.71 2.458V143.33H472.173c-18.223 0-21.704 20.476-21.704 20.476v102.38H204.759v40.952h245.71v61.427H245.712v40.952h409.518a805.522 805.522 0 0 1-64.909 148.246c-128.384-42.795-266.186-77.604-354.233-55.08a213.564 213.564 0 0 0-112.003 63.27c-95.418 116.917-26.21 294.034 175.274 294.034 119.989 0 236.087-67.366 325.771-177.73 134.322 65.932 398.666 176.297 398.666 176.297V701.3s-32.352-4.095-178.96-53.033z m-563.702 144.97c-158.893 0-204.759-124.699-126.336-194.112a191.86 191.86 0 0 1 90.913-46.276c93.575-10.238 189.811 35.629 293.624 86.614-74.941 94.598-166.674 153.774-258.2 153.774z" fill="#FFFFFF" p-id="2409"></path></svg>
+                            </span>
+                            支付宝支付
+                        </a>
+                        {% elif order.pay_status == 3 %}
+                        <a class="level-item button is-small is-primary">
+                            <!-- <span class="icon is-small"><i class="fas fa-reply"></i></span> -->
+                            确认收货
+                        </a>
+                        {% elif order.pay_status == 4 %}
+                        <a class="level-item button is-small is-primary is-outlined">
+                            再次购买
+                        </a>
+                        <a class="level-item button is-small is-primary">
+                            去评价
+                        </a>
+                        {% endif %}
+                        <a class="level-item button is-small " href="{% url 'users:order_detail' request.user.id order.id %}">
+                            查看详情
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="level-right">
+                        <div class="level-item">
+                            <!-- <a class="level-item button is-small is-primary">
+                                重新下单
+                            </a> -->
+                            <span class="has-text-danger-dark">该订单已失效，如需重新购买，请点击商品标题快速下单！</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </nav>
+                <hr />
+                {% endfor %}
+            </b-tab-item>
+
+            <b-tab-item label="待发货">
+                {% for order in not_shipped_orders %}
+                <div class="pt-31">
+                    <span>订单日期： {{ order.add_date }}</span>
+                    {% for product in order.dmallorderproduct_set.all %}
+                    <article class="media pt-4">
+                        <figure class="media-left">
+                            <p class="image is-96x96">
+                                <img src="{{ MEDIA_URL }}{{ product.spu.image }}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <div>
+                                    <p class="is-size">
+                                        <a class=" has-text-grey-dark" href="{% url 'product:product-detail' product.spu.id %}" target="_blank">
+                                            {{ product.spu.title }}</a></p>
+                                    <p class="is-size">
+                                        {% if product.spu.spec_type == 1 %}
+                                        {% for spec in product.sku.specs.all %}
+                                        <span class="pr-4">
+                                            <span class="has-text-grey">{{ spec.spec.name }}:</span>
+                                            {{ spec.option }}
+                                        </span>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                  <a class="level-item has-text-danger-dark">
+                                    {% if product.spu.spec_type == 1 %}
+                                    ¥{{ product.sku.shop_price }} x {{ product.count }}
+                                    {% else %}
+                                    ¥{{ product.spu.shop_price }} x {{ product.count }} 
+                                    {% endif %}
+                                  </a>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="media-right">
+                            <span class=" has-text-danger-dark">{{ order.get_pay_status_display }}</span>
+                        </div>
+                        
+                    </article>
+                    {% endfor %}
+                </div>
+                <hr/>
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <!-- 共{{ order.counts }}件商品， -->
+                        总金额 ¥{{ order.total_amount }} (含运费{{ order.freight }})
+                    </div>
+                    
+                    {% if order.pay_status != 6 %}
+                    <div class="level-right">
+                        {% if order.pay_status == 1 %}
+                        <a class="level-item button is-small is-info is-outlined" href="{% alipay_url order.order_sn %}" target="_blank">
+                            <span class="pr-3 pt-1 pl-2">
+                            <svg t="1632459990510" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2407" width="32" height="32"><path d="M1023.795 853.64v6.348a163.807 163.807 0 0 1-163.807 163.807h-696.18A163.807 163.807 0 0 1 0 859.988v-696.18A163.807 163.807 0 0 1 163.807 0h696.181a163.807 163.807 0 0 1 163.807 163.807V853.64z" fill="#009FE9" p-id="2408"></path><path d="M844.836 648.267c-40.952-14.333-95.623-34.809-156.846-57.128a949.058 949.058 0 0 0 90.094-222.573H573.325V307.14h245.711v-43.41l-245.71 2.458V143.33H472.173c-18.223 0-21.704 20.476-21.704 20.476v102.38H204.759v40.952h245.71v61.427H245.712v40.952h409.518a805.522 805.522 0 0 1-64.909 148.246c-128.384-42.795-266.186-77.604-354.233-55.08a213.564 213.564 0 0 0-112.003 63.27c-95.418 116.917-26.21 294.034 175.274 294.034 119.989 0 236.087-67.366 325.771-177.73 134.322 65.932 398.666 176.297 398.666 176.297V701.3s-32.352-4.095-178.96-53.033z m-563.702 144.97c-158.893 0-204.759-124.699-126.336-194.112a191.86 191.86 0 0 1 90.913-46.276c93.575-10.238 189.811 35.629 293.624 86.614-74.941 94.598-166.674 153.774-258.2 153.774z" fill="#FFFFFF" p-id="2409"></path></svg>
+                            </span>
+                            支付宝支付
+                        </a>
+                        {% elif order.pay_status == 3 %}
+                        <a class="level-item button is-small is-primary">
+                            <!-- <span class="icon is-small"><i class="fas fa-reply"></i></span> -->
+                            确认收货
+                        </a>
+                        {% elif order.pay_status == 4 %}
+                        <a class="level-item button is-small is-primary is-outlined">
+                            再次购买
+                        </a>
+                        <a class="level-item button is-small is-primary">
+                            去评价
+                        </a>
+                        {% endif %}
+                        <a class="level-item button is-small " href="{% url 'users:order_detail' request.user.id order.id %}">
+                            查看详情
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="level-right">
+                        <div class="level-item">
+                            <!-- <a class="level-item button is-small is-primary">
+                                重新下单
+                            </a> -->
+                            <span class="has-text-danger-dark">该订单已失效，如需重新购买，请点击商品标题快速下单！</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </nav>
+                <hr />
+                {% endfor %}
+            </b-tab-item>
+
+            <b-tab-item label="待收货">
+                {% for order in not_accept_orders %}
+                <div class="pt-31">
+                    <span>订单日期： {{ order.add_date }}</span>
+                    {% for product in order.dmallorderproduct_set.all %}
+                    <article class="media pt-4">
+                        <figure class="media-left">
+                            <p class="image is-96x96">
+                                <img src="{{ MEDIA_URL }}{{ product.spu.image }}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <div>
+                                    <p class="is-size">
+                                        <a class=" has-text-grey-dark" href="{% url 'product:product-detail' product.spu.id %}" target="_blank">
+                                            {{ product.spu.title }}</a></p>
+                                    <p class="is-size">
+                                        {% if product.spu.spec_type == 1 %}
+                                        {% for spec in product.sku.specs.all %}
+                                        <span class="pr-4">
+                                            <span class="has-text-grey">{{ spec.spec.name }}:</span>
+                                            {{ spec.option }}
+                                        </span>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                  <a class="level-item has-text-danger-dark">
+                                    {% if product.spu.spec_type == 1 %}
+                                    ¥{{ product.sku.shop_price }} x {{ product.count }}
+                                    {% else %}
+                                    ¥{{ product.spu.shop_price }} x {{ product.count }} 
+                                    {% endif %}
+                                  </a>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="media-right">
+                            <span class=" has-text-danger-dark">{{ order.get_pay_status_display }}</span>
+                        </div>
+                        
+                    </article>
+                    {% endfor %}
+                </div>
+                <hr/>
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <!-- 共{{ order.counts }}件商品， -->
+                        总金额 ¥{{ order.total_amount }} (含运费{{ order.freight }})
+                    </div>
+                    
+                    {% if order.pay_status != 6 %}
+                    <div class="level-right">
+                        {% if order.pay_status == 1 %}
+                        <a class="level-item button is-small is-info is-outlined" href="{% alipay_url order.order_sn %}" target="_blank">
+                            <span class="pr-3 pt-1 pl-2">
+                            <svg t="1632459990510" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2407" width="32" height="32"><path d="M1023.795 853.64v6.348a163.807 163.807 0 0 1-163.807 163.807h-696.18A163.807 163.807 0 0 1 0 859.988v-696.18A163.807 163.807 0 0 1 163.807 0h696.181a163.807 163.807 0 0 1 163.807 163.807V853.64z" fill="#009FE9" p-id="2408"></path><path d="M844.836 648.267c-40.952-14.333-95.623-34.809-156.846-57.128a949.058 949.058 0 0 0 90.094-222.573H573.325V307.14h245.711v-43.41l-245.71 2.458V143.33H472.173c-18.223 0-21.704 20.476-21.704 20.476v102.38H204.759v40.952h245.71v61.427H245.712v40.952h409.518a805.522 805.522 0 0 1-64.909 148.246c-128.384-42.795-266.186-77.604-354.233-55.08a213.564 213.564 0 0 0-112.003 63.27c-95.418 116.917-26.21 294.034 175.274 294.034 119.989 0 236.087-67.366 325.771-177.73 134.322 65.932 398.666 176.297 398.666 176.297V701.3s-32.352-4.095-178.96-53.033z m-563.702 144.97c-158.893 0-204.759-124.699-126.336-194.112a191.86 191.86 0 0 1 90.913-46.276c93.575-10.238 189.811 35.629 293.624 86.614-74.941 94.598-166.674 153.774-258.2 153.774z" fill="#FFFFFF" p-id="2409"></path></svg>
+                            </span>
+                            支付宝支付
+                        </a>
+                        {% elif order.pay_status == 3 %}
+                        <a class="level-item button is-small is-primary">
+                            确认收货
+                        </a>
+                        {% elif order.pay_status == 4 %}
+                        <a class="level-item button is-small is-primary is-outlined">
+                            再次购买
+                        </a>
+                        <a class="level-item button is-small is-primary">
+                            去评价
+                        </a>
+                        {% endif %}
+                        <a class="level-item button is-small " href="{% url 'users:order_detail' request.user.id order.id %}">
+                            查看详情
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="level-right">
+                        <div class="level-item">
+                            <!-- <a class="level-item button is-small is-primary">
+                                重新下单
+                            </a> -->
+                            <span class="has-text-danger-dark">该订单已失效，如需重新购买，请点击商品标题快速下单！</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </nav>
+                <hr />
+                {% endfor %}
+            </b-tab-item>
+
+            <b-tab-item label="待评价">
+            {% for order in not_comment_orders %}
+                <div class="pt-31">
+                    <span>订单日期： {{ order.add_date }}</span>
+                    {% for product in order.dmallorderproduct_set.all %}
+                    <article class="media pt-4">
+                        <figure class="media-left">
+                            <p class="image is-96x96">
+                                <img src="{{ MEDIA_URL }}{{ product.spu.image }}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <div>
+                                    <p class="is-size">
+                                        <a class=" has-text-grey-dark" href="{% url 'product:product-detail' product.spu.id %}" target="_blank">
+                                            {{ product.spu.title }}</a></p>
+                                    <p class="is-size">
+                                        {% if product.spu.spec_type == 1 %}
+                                        {% for spec in product.sku.specs.all %}
+                                        <span class="pr-4">
+                                            <span class="has-text-grey">{{ spec.spec.name }}:</span>
+                                            {{ spec.option }}
+                                        </span>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                  <a class="level-item has-text-danger-dark">
+                                    {% if product.spu.spec_type == 1 %}
+                                    ¥{{ product.sku.shop_price }} x {{ product.count }}
+                                    {% else %}
+                                    ¥{{ product.spu.shop_price }} x {{ product.count }} 
+                                    {% endif %}
+                                  </a>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="media-right">
+                            <span class=" has-text-danger-dark">{{ order.get_pay_status_display }}</span>
+                        </div>
+                        
+                    </article>
+                    {% endfor %}
+                </div>
+                <hr/>
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <!-- 共{{ order.counts }}件商品， -->
+                        总金额 ¥{{ order.total_amount }} (含运费{{ order.freight }})
+                    </div>
+                    
+                    {% if order.pay_status != 6 %}
+                    <div class="level-right">
+                        {% if order.pay_status == 1 %}
+                        <a class="level-item button is-small is-info is-outlined" href="{% alipay_url order.order_sn %}" target="_blank">
+                            <span class="pr-3 pt-1 pl-2">
+                            <svg t="1632459990510" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2407" width="32" height="32"><path d="M1023.795 853.64v6.348a163.807 163.807 0 0 1-163.807 163.807h-696.18A163.807 163.807 0 0 1 0 859.988v-696.18A163.807 163.807 0 0 1 163.807 0h696.181a163.807 163.807 0 0 1 163.807 163.807V853.64z" fill="#009FE9" p-id="2408"></path><path d="M844.836 648.267c-40.952-14.333-95.623-34.809-156.846-57.128a949.058 949.058 0 0 0 90.094-222.573H573.325V307.14h245.711v-43.41l-245.71 2.458V143.33H472.173c-18.223 0-21.704 20.476-21.704 20.476v102.38H204.759v40.952h245.71v61.427H245.712v40.952h409.518a805.522 805.522 0 0 1-64.909 148.246c-128.384-42.795-266.186-77.604-354.233-55.08a213.564 213.564 0 0 0-112.003 63.27c-95.418 116.917-26.21 294.034 175.274 294.034 119.989 0 236.087-67.366 325.771-177.73 134.322 65.932 398.666 176.297 398.666 176.297V701.3s-32.352-4.095-178.96-53.033z m-563.702 144.97c-158.893 0-204.759-124.699-126.336-194.112a191.86 191.86 0 0 1 90.913-46.276c93.575-10.238 189.811 35.629 293.624 86.614-74.941 94.598-166.674 153.774-258.2 153.774z" fill="#FFFFFF" p-id="2409"></path></svg>
+                            </span>
+                            支付宝支付
+                        </a>
+                        {% elif order.pay_status == 3 %}
+                        <a class="level-item button is-small is-primary">
+                            确认收货
+                        </a>
+                        {% elif order.pay_status == 4 %}
+                        <a class="level-item button is-small is-primary is-outlined">
+                            再次购买
+                        </a>
+                        <a class="level-item button is-small is-primary">
+                            去评价
+                        </a>
+                        {% endif %}
+                        <a class="level-item button is-small ">
+                            查看详情
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="level-right">
+                        <div class="level-item">
+                            <!-- <a class="level-item button is-small is-primary">
+                                重新下单
+                            </a> -->
+                            <span class="has-text-danger-dark">该订单已失效，如需重新购买，请点击商品标题快速下单！</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </nav>
+                <hr />
+                {% endfor %}
+            </b-tab-item>
+            <b-tab-item label="已完成">
+                {% for order in over_orders %}
+                <div class="pt-31">
+                    <span>订单日期： {{ order.add_date }}</span>
+                    {% for product in order.dmallorderproduct_set.all %}
+                    <article class="media pt-4">
+                        <figure class="media-left">
+                            <p class="image is-96x96">
+                                <img src="{{ MEDIA_URL }}{{ product.spu.image }}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <div>
+                                    <p class="is-size">
+                                        <a class=" has-text-grey-dark" href="{% url 'product:product-detail' product.spu.id %}" target="_blank">
+                                            {{ product.spu.title }}</a></p>
+                                    <p class="is-size">
+                                        {% if product.spu.spec_type == 1 %}
+                                        {% for spec in product.sku.specs.all %}
+                                        <span class="pr-4">
+                                            <span class="has-text-grey">{{ spec.spec.name }}:</span>
+                                            {{ spec.option }}
+                                        </span>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                  <a class="level-item has-text-danger-dark">
+                                    {% if product.spu.spec_type == 1 %}
+                                    ¥{{ product.sku.shop_price }} x {{ product.count }}
+                                    {% else %}
+                                    ¥{{ product.spu.shop_price }} x {{ product.count }} 
+                                    {% endif %}
+                                  </a>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="media-right">
+                            <span class=" has-text-danger-dark">{{ order.get_pay_status_display }}</span>
+                        </div>
+                        
+                    </article>
+                    {% endfor %}
+                </div>
+                <hr/>
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <!-- 共{{ order.counts }}件商品， -->
+                        总金额 ¥{{ order.total_amount }} (含运费{{ order.freight }})
+                    </div>
+                    
+                    {% if order.pay_status != 6 %}
+                    <div class="level-right">
+                        {% if order.pay_status == 1 %}
+                        <a class="level-item button is-small is-info is-outlined" href="{% alipay_url order.order_sn %}" target="_blank">
+                            <span class="pr-3 pt-1 pl-2">
+                            <svg t="1632459990510" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2407" width="32" height="32"><path d="M1023.795 853.64v6.348a163.807 163.807 0 0 1-163.807 163.807h-696.18A163.807 163.807 0 0 1 0 859.988v-696.18A163.807 163.807 0 0 1 163.807 0h696.181a163.807 163.807 0 0 1 163.807 163.807V853.64z" fill="#009FE9" p-id="2408"></path><path d="M844.836 648.267c-40.952-14.333-95.623-34.809-156.846-57.128a949.058 949.058 0 0 0 90.094-222.573H573.325V307.14h245.711v-43.41l-245.71 2.458V143.33H472.173c-18.223 0-21.704 20.476-21.704 20.476v102.38H204.759v40.952h245.71v61.427H245.712v40.952h409.518a805.522 805.522 0 0 1-64.909 148.246c-128.384-42.795-266.186-77.604-354.233-55.08a213.564 213.564 0 0 0-112.003 63.27c-95.418 116.917-26.21 294.034 175.274 294.034 119.989 0 236.087-67.366 325.771-177.73 134.322 65.932 398.666 176.297 398.666 176.297V701.3s-32.352-4.095-178.96-53.033z m-563.702 144.97c-158.893 0-204.759-124.699-126.336-194.112a191.86 191.86 0 0 1 90.913-46.276c93.575-10.238 189.811 35.629 293.624 86.614-74.941 94.598-166.674 153.774-258.2 153.774z" fill="#FFFFFF" p-id="2409"></path></svg>
+                            </span>
+                            支付宝支付
+                        </a>
+                        {% elif order.pay_status == 3 %}
+                        <a class="level-item button is-small is-primary">
+                            确认收货
+                        </a>
+                        {% elif order.pay_status == 4 %}
+                        <a class="level-item button is-small is-primary is-outlined">
+                            再次购买
+                        </a>
+                        <a class="level-item button is-small is-primary">
+                            去评价
+                        </a>
+                        {% endif %}
+                        <a class="level-item button is-small " href="{% url 'users:order_detail' request.user.id order.id %}">
+                            查看详情
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="level-right">
+                        <div class="level-item">
+                            <!-- <a class="level-item button is-small is-primary">
+                                重新下单
+                            </a> -->
+                            <span class="has-text-danger-dark">该订单已失效，如需重新购买，请点击商品标题快速下单！</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </nav>
+                <hr />
+                {% endfor %}
+            </b-tab-item>
+            <b-tab-item label="已取消">
+                {% for order in cancel_orders %}
+                <div class="pt-31">
+                    <span>订单日期： {{ order.add_date }}</span>
+                    {% for product in order.dmallorderproduct_set.all %}
+                    <article class="media pt-4">
+                        <figure class="media-left">
+                            <p class="image is-96x96">
+                                <img src="{{ MEDIA_URL }}{{ product.spu.image }}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <div>
+                                    <p class="is-size">
+                                        <a class=" has-text-grey-dark" href="{% url 'product:product-detail' product.spu.id %}" target="_blank">
+                                            {{ product.spu.title }}</a></p>
+                                    <p class="is-size">
+                                        {% if product.spu.spec_type == 1 %}
+                                        {% for spec in product.sku.specs.all %}
+                                        <span class="pr-4">
+                                            <span class="has-text-grey">{{ spec.spec.name }}:</span>
+                                            {{ spec.option }}
+                                        </span>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                  <a class="level-item has-text-danger-dark">
+                                    {% if product.spu.spec_type == 1 %}
+                                    ¥{{ product.sku.shop_price }} x {{ product.count }}
+                                    {% else %}
+                                    ¥{{ product.spu.shop_price }} x {{ product.count }} 
+                                    {% endif %}
+                                  </a>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="media-right">
+                            <span class=" has-text-danger-dark">{{ order.get_pay_status_display }}</span>
+                        </div>
+                        
+                    </article>
+                    {% endfor %}
+                </div>
+                <hr/>
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        <!-- 共{{ order.counts }}件商品， -->
+                        总金额 ¥{{ order.total_amount }} (含运费{{ order.freight }})
+                    </div>
+                    
+                    {% if order.pay_status != 6 %}
+                    <div class="level-right">
+                        {% if order.pay_status == 1 %}
+                        <a class="level-item button is-small is-info is-outlined" href="{% alipay_url order.order_sn %}" target="_blank">
+                            <span class="pr-3 pt-1 pl-2">
+                            <svg t="1632459990510" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2407" width="32" height="32"><path d="M1023.795 853.64v6.348a163.807 163.807 0 0 1-163.807 163.807h-696.18A163.807 163.807 0 0 1 0 859.988v-696.18A163.807 163.807 0 0 1 163.807 0h696.181a163.807 163.807 0 0 1 163.807 163.807V853.64z" fill="#009FE9" p-id="2408"></path><path d="M844.836 648.267c-40.952-14.333-95.623-34.809-156.846-57.128a949.058 949.058 0 0 0 90.094-222.573H573.325V307.14h245.711v-43.41l-245.71 2.458V143.33H472.173c-18.223 0-21.704 20.476-21.704 20.476v102.38H204.759v40.952h245.71v61.427H245.712v40.952h409.518a805.522 805.522 0 0 1-64.909 148.246c-128.384-42.795-266.186-77.604-354.233-55.08a213.564 213.564 0 0 0-112.003 63.27c-95.418 116.917-26.21 294.034 175.274 294.034 119.989 0 236.087-67.366 325.771-177.73 134.322 65.932 398.666 176.297 398.666 176.297V701.3s-32.352-4.095-178.96-53.033z m-563.702 144.97c-158.893 0-204.759-124.699-126.336-194.112a191.86 191.86 0 0 1 90.913-46.276c93.575-10.238 189.811 35.629 293.624 86.614-74.941 94.598-166.674 153.774-258.2 153.774z" fill="#FFFFFF" p-id="2409"></path></svg>
+                            </span>
+                            支付宝支付
+                        </a>
+                        {% elif order.pay_status == 3 %}
+                        <a class="level-item button is-small is-primary">
+                            确认收货
+                        </a>
+                        {% elif order.pay_status == 4 %}
+                        <a class="level-item button is-small is-primary is-outlined">
+                            再次购买
+                        </a>
+                        <a class="level-item button is-small is-primary">
+                            去评价
+                        </a>
+                        {% endif %}
+                        <a class="level-item button is-small " href="{% url 'users:order_detail' request.user.id order.id %}">
+                            查看详情
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="level-right">
+                        <div class="level-item">
+                            <!-- <a class="level-item button is-small is-primary">
+                                重新下单
+                            </a> -->
+                            <span class="has-text-danger-dark">该订单已失效，如需重新购买，请点击商品标题快速下单！</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </nav>
+                <hr />
+                {% endfor %}
+            </b-tab-item>
+        </b-tabs>
+    </section>
+</template>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% load adspace %}
+<div class="container is-fluid">
+    {% ad_space 1 as ads %}
+    <div class="mt-3 box is-radiusless">
+        <div class="columns is-multiline is-mobile">
+        {% for ad in ads %}
+            <div class="column is-6-mobile">
+                <a href="{{ ad.url }}" target="_blank">
+                <img class="image" src="{{ MEDIA_URL }}{{ ad.image }}" alt="" srcset="">
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>

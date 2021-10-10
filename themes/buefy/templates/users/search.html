@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block hero-body %}
+<div class="container is-fluid">
+    搜索词：{{ keyword }}
+</div>
+{% endblock  %}
+
+
+{% block section %}
+<div class="container is-fluid">
+    <div class="columns is-multiline">
+        {% if spus %}
+        {% for good in spus %}
+        <div class="column is-3">
+            <a class="box" style="position: relative;" href="{% url 'product:product-detail' good.id %}">
+                {% if good.is_hot and good.is_benefit %}
+                <div class="tags has-addons is-pulled-right" style="position: absolute; top: 0; left: 0; z-index: 10;">
+                    <span class="tag is-primary">促销</span>
+                    <span class="tag is-danger">热销</span>
+                </div>
+                {% elif good.is_new and good.is_benefit %}
+                <div class="tags has-addons is-pulled-right" style="position: absolute; top: 0; left: 0; z-index: 10;">
+                    <span class="tag is-primary">新品</span>
+                    <span class="tag is-danger">促销</span>
+                </div>
+                {% elif good.is_hot %}
+                <div class="tags has-addons is-pulled-right" style="position: absolute; top: 0; left: 0; z-index: 10;">
+                    <!-- <span class="tag">Package</span> -->
+                    <span class="tag is-danger">热销</span>
+                </div>
+                {% elif good.is_benefit %}
+                <div class="tags has-addons is-pulled-right" style="position: absolute; top: 0; left: 0; z-index: 10;">
+                    <!-- <span class="tag">Package</span> -->
+                    <span class="tag is-primary">促销</span>
+                </div>
+                {% endif %}
+                <figure class="image is-square">
+                    <img src="{{ MEDIA_URL }}{{ good.image }}" alt="" srcset="">
+                </figure>
+    
+    
+                <h1 class="pt-3 pb-1 has-text-weight-medium is-size-4 has-text-danger-dark is-family-primary">
+                    ¥{{ good.shop_price }}</h1>
+                <h2 class="is-family-secondary" style="font-size: 14px;">
+                    {{ good.title|truncatechars:25 }}
+                </h2>
+                <div class="mt-2 foot">
+                    <div class=" is-pulled-left is-size-7 has-text-grey-light">{{ good.sales }}人付款</div>
+                    <div class=" is-pulled-right is-size-7 has-text-grey-light">5.0分</div>
+                    <div class="is-clearfix"></div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

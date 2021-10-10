@@ -1,0 +1,50 @@
+/* html, body{
+    background-color: rgb(247, 247, 247) !important;
+} */
+[v-cloak] {
+    display: none;
+    } 
+.head{
+    position: relative;
+    z-index: 30;
+    height: 40px;
+    font-size: 12px;
+    color: #b0b0b0 !important;
+    background: #333;
+    line-height: 40px;
+}
+.head a{
+    color: #b0b0b0;
+}
+.head a:hover{
+    color: #ffffff;
+}
+.head .dcart{
+    position: relative;
+    z-index: 32;
+    text-align: center;
+    color: #b0b0b0 !important;
+    background: #424242;
+    border: none;
+    font-size: 12px;
+    display: block;
+}
+
+.head .dcart:hover{
+    color: rgb(231, 103, 44) !important;
+}
+.head .leo{
+    position: relative;
+    left: 5px;
+}
+
+.dropdown-content{
+    padding: 0 !important;
+}
+
+.is-size {
+    font-size: 14px;
+}
+.is-border {
+    border: #dbdbdb solid 1px;
+}

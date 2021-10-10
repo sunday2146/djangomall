@@ -1,0 +1,54 @@
+<div class="navbar-menu">
+    <div class="navbar-end">
+        <b-dropdown
+            v-model="navigation"
+            position="is-bottom-left"
+            aria-role="menu"
+            trap-focus>
+            <template #trigger>
+                <a
+                    class="navbar-item"
+                    role="button">
+                    <span>{{ request.user }}</span>
+                    <b-icon icon="menu-down"></b-icon>
+                </a>
+            </template>
+
+            <!-- <b-dropdown-item custom aria-role="menuitem">
+                Logged as <b>Rafael Beraldo</b>
+            </b-dropdown-item> -->
+            <hr class="dropdown-divider">
+            <b-dropdown-item has-link aria-role="menuitem">
+                <a href="{% url 'users:orders' request.user.id %}" target="_blank">
+                    <b-icon icon="bank" type="is-link" size="is-small"></b-icon>
+                    <span>我的订单</span> 
+                </a>
+            </b-dropdown-item>
+            <!-- <b-dropdown-item has-link aria-role="menuitem">
+                <a href="https://google.com" target="_blank">
+                    <b-icon icon="comment-edit-outline" type="is-info" size="is-small"></b-icon>
+                    <span>评价晒单</span> 
+                </a>
+            </b-dropdown-item> -->
+            <b-dropdown-item has-link aria-role="menuitem">
+                <a href="{% url 'users:fav_list' request.user.id %}" target="_blank">
+                    <b-icon icon="heart-outline" type="is-danger" size="is-small"></b-icon>
+                    <span>我的收藏</span> 
+                </a>
+            </b-dropdown-item>
+            <hr class="dropdown-divider" aria-role="menuitem">
+            <b-dropdown-item has-link aria-role="menuitem">
+                <a href="{% url 'users:member' request.user.id %}">
+                <b-icon icon="account-cog"></b-icon>
+                <span>个人账户</span> 
+                </a>
+            </b-dropdown-item>
+            <b-dropdown-item has-link aria-role="menuitem">
+                <a @click="logout">
+                    <b-icon icon="logout"></b-icon>
+                    <span>退出登录</span> 
+                </a>
+            </b-dropdown-item>
+        </b-dropdown>
+    </div>
+</div>

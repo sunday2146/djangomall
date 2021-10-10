@@ -1,0 +1,83 @@
+
+<template>
+    <b-navbar wrapper-class="container is-fluid" style="z-index: 1;" 
+        type="is-white" shadow spaced transparent>
+        {% block navbar-brand %}
+        <template #brand>
+            <b-navbar-item href="">
+                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+            </b-navbar-item>
+        </template>
+        {% endblock %}
+        
+        {% block navbar-start %}
+        <template #start>
+            <b-navbar-item href="/" 
+                {% if request.path_info == '/' %}active{% endif %}>
+                首页
+            </b-navbar-item>
+            <b-navbar-item href="{% url 'product:categories' %}" 
+                {% if request.path_info == '/product/category/' %}active{% endif %}>
+                <b-icon
+                    pack="mdi"
+                    icon="format-list-text"
+                    size="is-small">
+                </b-icon>
+                <span>全部分类</span>
+            </b-navbar-item>
+            
+            {% for nav, sub_nav in navs.items %}
+                {% if sub_nav %}
+                    <b-navbar-dropdown label="{{ nav }}" :hoverable="hoverable">
+                        {% for sub in sub_nav %} 
+                            <b-navbar-item href="{% url 'product:category-detail' sub.id %}">
+                                {{ sub }}
+                            </b-navbar-item>
+                        {% endfor %}
+                    </b-navbar-dropdown>
+                {% else %}
+                    <b-navbar-item href="{% url 'product:category-detail' nav.id %}">
+                        {{ nav }}
+                    </b-navbar-item>
+                {% endif %}
+            {% endfor %}
+            
+        </template>
+        {% endblock %}
+
+        {% block navbar-end %}
+        <template #end>
+            <b-navbar-item tag="div">
+                {% comment %}
+                <!-- axios方式请求搜索 -->
+                <b-field>
+                    <b-input placeholder="Search..."
+                        type="search"
+                        icon="magnify"
+                        v-model="keyword">
+                    </b-input>
+                    <p class="control">
+                        <b-button type="is-primary" label="Search" @click="search" />
+                    </p>
+                </b-field>
+                {% endcomment %}
+                <form action="{% url 'users:search' %}" method="get">
+                <b-field>
+                    {% csrf_token %}
+                    <b-input placeholder="Search..."
+                        type="search"
+                        icon="magnify"
+                        name="keyword"
+                        value="{{ keyword }}">
+                    </b-input>
+                    <p class="control">
+                        <b-input custom-class="button is-primary" type="submit" value="搜 索"></b-input>
+                    </p>
+                </b-field>
+                </form>
+            </b-navbar-item>
+            << keyword >>
+        </template>
+        {% endblock %}
+    </b-navbar>
+</template>

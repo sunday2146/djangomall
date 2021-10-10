@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DjangoMall商城系统{% endblock %} | 
+        {% block sub_title %}大道至简，回归本心！{% endblock %}</title>
+    {% block seo %}{% endblock %}
+    {% block extrahead %}
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    {% endblock %}  
+</head>
+<body>
+    <header id="header" v-cloak>
+    {% block header %}
+        {% block top_head %}{% include 'component/tophead.html' %}{% endblock %}
+        {% block navbar %}{% include 'component/navbar.html' %}{% endblock %}
+        {% block hero %}
+        <section class="hero is-small is-primary">
+            <div class="hero-body">
+            {% block hero-body %}
+            <p class="title">
+                Small hero
+              </p>
+              <p class="subtitle">
+                Small subtitle
+              </p>
+            {% endblock %}
+            </div>
+        </section>
+        {% endblock %}
+    {% endblock %}
+    </header>
+
+    
+    {% block section %}{% endblock %}
+        
+    {% block extrafoot %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css">
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+        <script src="{% static 'vue/header.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

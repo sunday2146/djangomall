@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}
+    登录
+{% endblock %}
+
+
+{% block header %}{% endblock %}
+
+
+{% block section %}
+<section class="hero is-primary is-medium is-fullheight">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-5">
+                    <div class="box">
+                        
+                        <p class="subtitle has-text-centered1 has-text-grey is-size-4">
+                            
+                            {% block auth-title %}登 录
+                            {% endblock  %}
+                                  
+                        </p>
+                        <!-- <h1 class="title has-text-dark has-text-centered">DjangoMall</h1> -->
+                        
+                        {% block form %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                            <div class="field mt-3">
+                                <div class="control">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    <div class=" is-size-7 has-text-grey-light">{{ field.help_text }}</div>
+                                    <div class=" is-size-7 has-text-danger">
+                                        {{ field.errors }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <!-- <input type="hidden" name="anext" value="{{ anext }}"> -->
+                            <div class="field mt-4 mb-4">
+                                <div class="control">
+                                    <input class="button is-primary is-fullwidth" type="submit" value="{% block button-value %}登录{% endblock %}">  
+                                </div>
+                            </div>
+                        </form>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+    

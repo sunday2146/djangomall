@@ -1,0 +1,14 @@
+{% extends 'users/member/user_info.html' %}
+
+{% block member %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="notification is-danger is-light">
+        是否删除收藏商品：< {{ fav.content_object.title }} >?
+        <br>
+        <button class="mt-4 button is-danger" type="submit">确认</button>
+    </div>
+    
+</form>
+{% endblock %}
+    

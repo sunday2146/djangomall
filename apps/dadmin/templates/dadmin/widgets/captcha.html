@@ -1,0 +1,15 @@
+{% load i18n %}
+{% spaceless %}
+<style>
+    .input{
+        width: 70%;
+        height: 23px;
+    }
+</style>
+    {% if audio %}
+        <a title="{% trans "Play CAPTCHA as audio file" %}" href="{{ audio }}">
+    {% endif %}
+    <img src="{{ image }}" alt="captcha" class="captcha" style="float: right;" />
+    {% if audio %}</a>{% endif %}
+{% endspaceless %}
+{% include "django/forms/widgets/multiwidget.html" %}

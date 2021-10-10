@@ -1,0 +1,15 @@
+{% extends 'users/member/user_info.html' %}
+
+
+{% block member %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="notification is-success is-light">
+        确认将该地址：< {{ address.province }}{{ address.city }}{{ address.district }}{{ address.address }} >设为默认?
+        <br>
+        <button class="mt-4 button is-success" type="submit">确认</button>
+    </div>
+
+</form>
+{% endblock %}
+    

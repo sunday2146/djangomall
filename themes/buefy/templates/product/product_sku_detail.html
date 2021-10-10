@@ -1,0 +1,26 @@
+{% extends 'product/product_detail.html' %}
+{% load static %}
+{% block extrahead %}{{ block.super }}{% endblock %}
+
+{% block section %}{{ block.super }}{% endblock %}
+    
+{% block product %}
+    <div class="columns" id="product-skuc" v-cloak>
+      {% include 'product/component/vue_product_banner.html' %}
+      {% include 'product/component/vue_product_price.html' %}
+    </div>
+{% endblock %}
+
+{% block extrafoot %}
+<script>
+  var product_id = {{ product.id }};
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css">
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+<script src="{% static 'vue/header.js' %}"></script>
+<script src="{% static 'vue/common.js' %}"></script>
+<script src="{% static 'vue/product-skuc.js' %}"></script>
+<script src="{% static 'vue/product-content.js' %}"></script>
+{% endblock %}
