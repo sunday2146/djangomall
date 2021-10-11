@@ -11,6 +11,7 @@ from django.views.generic.edit import DeleteView
 from DjangoMall.views import BaseView
 from dadmin.views import HasLoginRequired
 from product.models.product import ProductSPU
+from users.models.models import UserInfo
 from users.models.operate import DmallFavorite, DmallHotSearchWords
 from users.models import DmallAddress
 from users.forms import DmallFavoriteForm
@@ -182,3 +183,13 @@ class DmallAddressHasDefault(DmallAddressUpdateView):
         form.instance.is_default = True
         DmallAddress.objects.filter(owner=self.request.user, is_default=True).update(is_default=False)
         return super().form_valid(form)
+
+
+class UserInfoUpdateView(HasLoginRequired, BaseView, UpdateView):
+    # 修改用户信息
+    model = UserInfo
+    template_name = "users/member/edit_user.html"
+    fields = ('mobile', 'nickname', 'desc', 'avatar', 'signature', 'default_address', )
+
+    def get_success_url(self) -> str:
+        return reverse('users:member', kwargs={'pk': self.request.user.id})

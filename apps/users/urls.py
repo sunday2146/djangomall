@@ -15,6 +15,7 @@ urlpatterns = [
     path('search/', views.DmallSearchView.as_view(), name='search'),
     path('create/address/', views.DmallAddressCreateView.as_view(), name='add_address'),
     path('member/<int:pk>/profile/', views.DmallUserInfoDetailView.as_view(), name='member'),
+    path('member/<int:pk>/edit/', views.UserInfoUpdateView.as_view(), name='update_user'),
     path('member/<int:pk>/orders/', views.DmallOwnerOrderInfoListView.as_view(), name='orders'),
     path('member/<int:pk>/orderDetail/<int:order_id>/', views.DmallOwnerOrderInfoDetailView.as_view(), name='order_detail'),
     path('member/<int:pk>/address/', views.DmallAddressListView.as_view(), name='address'),
@@ -23,4 +24,5 @@ urlpatterns = [
     path('member/<int:pk>/address/<int:address_id>/default/', views.DmallAddressHasDefault.as_view(), name='addr_default'),
     path('member/<int:pk>/fav/', views.DmallFavoriteListView.as_view(), name='fav_list'),
     path('member/<int:pk>/fav/<int:fav_id>/delete/', views.DmallFavoriteDeleteView.as_view(), name='fav_delete'),
+
 ]

@@ -1,0 +1,9 @@
+{% extends 'users/member/user_info.html' %}
+
+{% block member %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+{{ form.as_p }}
+<input type="submit" class=" button is-primary" value="保存">
+</form>
+{% endblock %}

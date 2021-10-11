@@ -2,7 +2,7 @@ from .views import DmallLoginView, DmallLogoutView, DmallRegisterCreateView, Dma
 from .operate import (
     DmallAddressHasDefault, DmallFavoriteView, DmallSearchView, 
     DmallAddressCreateView, DmallAddressUpdateView, DmallAddressDeleteView,
-    DmallFavoriteCreateView, DmallFavoriteDeleteView
+    DmallFavoriteCreateView, DmallFavoriteDeleteView, UserInfoUpdateView
 )
 from .userinfo import (
     DmallUserInfoDetailView, DmallOwnerOrderInfoListView,

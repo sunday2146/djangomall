@@ -118,7 +118,7 @@
                         </div>
                     </div>
                     <div class="column is-narrow-mobile">
-                        <a class=" button is-light is-pulled-right" href="" style="margin-top: 1.8rem">修改信息</a>
+                        <a class=" button is-light is-pulled-right" href="{% url 'users:update_user' request.user.id %}" style="margin-top: 1.8rem">修改信息</a>
                     </div>
                 </div>    
                 
