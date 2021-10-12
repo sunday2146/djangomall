@@ -9,7 +9,8 @@
 
 from alipay import AliPay, DCAliPay, ISVAliPay
 from alipay.utils import AliPayConfig
-from DjangoMall.settings import alipay_private_key_path, alipay_public_key_path
+# from DjangoMall.settings import alipay_private_key_path, alipay_public_key_path
+from DjangoMall.conf import alipay_private_key_path, alipay_public_key_path, alipay_appid, alipay_debug, notify_url
 
 app_private_key_string = open(alipay_private_key_path).read()
 alipay_public_key_string = open(alipay_public_key_path).read()
@@ -28,13 +29,13 @@ alipay_public_key_string == """
 # print(alipay_public_key_string)
 def Alipay():
     alipay = AliPay(
-        appid="2021000116697536",
-        app_notify_url=None,  # 默认回调url
+        appid=alipay_appid,
+        app_notify_url=notify_url,  # 默认回调url
         app_private_key_string=app_private_key_string,
         # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
         alipay_public_key_string=alipay_public_key_string,
         sign_type="RSA2",  # RSA 或者 RSA2
-        debug=True,  # 默认False
+        debug=alipay_debug,  # 默认False
         verbose=False,  # 输出调试数据
         config=AliPayConfig(timeout=15)  # 可选, 请求超时时间
     )

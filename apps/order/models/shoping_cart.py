@@ -1,10 +1,11 @@
 import json
+from decimal import Decimal
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core import serializers
 
 from dadmin.models import BaseModel
-from product.models import ProductSKU, ProductSPU
+from product.models import ProductSKU, ProductSPU, ProductSKUSpec
 from utils.tools import sum_list
 
 
@@ -68,6 +69,7 @@ class DmallShopingCart(BaseModel):
         goods_num = sum_list(goods_num_list)
         return [sum_money, goods_num]
 
+
     @classmethod
     def get_cart_json(cls, user):
         # 序列化购物车数据
@@ -92,11 +94,13 @@ class DmallShopingCart(BaseModel):
                 sku_data = json.loads(sku_data)
                 for data in sku_data:
                     # 购物车多规格的总价 数量 * 单价
-                    cart['total'] = str(cart['num'] * data['fields']['shop_price'])
+                    cart['total'] = cart['num'] * Decimal(data['fields']['shop_price'])
                     cart['sku'] = data['fields']
+                    cart['specs'] = ProductSKUSpec.objects.filter(sku=skus.first().id)
                     
             else:
                 # 购物车单规格的总价 数量 * 单价
-                cart['total'] = str(cart['num'] * data['fields']['shop_price'])
+                cart['total'] = cart['num'] * Decimal(data['fields']['shop_price'])
         # 输出json数据
-        return json.dumps(fields, ensure_ascii=False)
+        # return json.dumps(fields, ensure_ascii=False)
+        return fields

@@ -13,11 +13,8 @@
 
 {% block level-payall %}
 
-
-{{ cart_json }}
-
-{% for cart in carts %} 
-<div class="level">  
+{% for cart in cart_json %}
+<div class="level">
     <div class="level-left">
         <div class="level-item">
             <figure class="image">
@@ -31,31 +28,31 @@
         <div class="level-item">
             {{ cart.spu.title }} <br> 
             {% if cart.spu.spec_type == 1 %}
-                {% for spec in cart.sku.specs.all %}
+                {% for spec in cart.specs %}
                     {{ spec.spec.name }}:
                     {{ spec.option }}	
                 {% endfor %}
             {% endif %}
-            
         </div>
     </div>
+
     <div class="level-right">
         <div class="level-item pr-6">
             {% if cart.sku %}
-                {{ cart.num }}{{ cart.spu.product_unit }} x {{ cart.sku.shop_price }}
+                {{ cart.num }}{{ cart_product.spu.product_unit }} x {{ cart.sku.shop_price }}
             {% else %}
                 {{ cart.num }}{{ cart.spu.product_unit }} x {{ cart.spu.shop_price }}
             {% endif %}
         </div>
         <div class="level-item pl-5">
-            <strong class="has-text-danger-dark is-size-5">{{ money }}</strong>
+            <strong class="has-text-danger-dark is-size-5">{{ cart.total }}</strong>
         </div>
     </div>
-</div> 
+</div>
 {% endfor %}
 {% endblock %}
 
 {% block num %}{{ goods_num }}{% endblock %}
 {% block total %}{{ sum_money }}{% endblock %}
-{% block freight %}3{% endblock %}
+{% block freight %}{{ freight }}{% endblock %}
     
