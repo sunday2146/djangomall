@@ -83,6 +83,7 @@ class DmallShopingCart(BaseModel):
             spu_data = json.loads(spu_data)
             for data in spu_data:
                 cart['spu'] = data['fields']
+                
             
             # 如果存在多规格数据，则序列化sku
             if cart['sku']:
@@ -90,6 +91,12 @@ class DmallShopingCart(BaseModel):
                 sku_data = serializers.serialize('json', skus)
                 sku_data = json.loads(sku_data)
                 for data in sku_data:
+                    # 购物车多规格的总价 数量 * 单价
+                    cart['total'] = str(cart['num'] * data['fields']['shop_price'])
                     cart['sku'] = data['fields']
+                    
+            else:
+                # 购物车单规格的总价 数量 * 单价
+                cart['total'] = str(cart['num'] * data['fields']['shop_price'])
         # 输出json数据
         return json.dumps(fields, ensure_ascii=False)

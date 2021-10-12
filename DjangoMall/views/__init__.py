@@ -27,7 +27,7 @@ class BaseView:
             context['carts'] = DmallShopingCart.get_cart_owner(self.request.user)
             context['sum_money'], context['goods_num']  = DmallShopingCart.get_cart_sum_money(self.request.user)
             # DmallShopingCart.get_cart_sum_money(self.request.user)
-            DmallShopingCart.get_cart_json(self.request.user)
+            context['cart_json'] = DmallShopingCart.get_cart_json(self.request.user)
         return context
 
 

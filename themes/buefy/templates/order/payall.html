@@ -1,0 +1,61 @@
+{% extends 'order/buynow.html' %}
+
+{% block hero-body %}
+<div class="container is-fluid">
+    <p class="title">
+        购物车结算！
+    </p>
+    <p class="subtitle">
+        商品数量有限，请及时支付！
+    </p>
+</div>
+{% endblock %}
+
+{% block level-payall %}
+
+
+{{ cart_json }}
+
+{% for cart in carts %} 
+<div class="level">  
+    <div class="level-left">
+        <div class="level-item">
+            <figure class="image">
+                {% if cart.spu.spec_type == 1 %}
+                    <img src="{{ MEDIA_URL }}{{ cart.sku.image }}" style="width: 100px;">
+                {% else %}
+                    <img src="{{ MEDIA_URL }}{{ cart.spu.image }}" style="width: 100px;">
+                {% endif %}
+            </figure>
+        </div>
+        <div class="level-item">
+            {{ cart.spu.title }} <br> 
+            {% if cart.spu.spec_type == 1 %}
+                {% for spec in cart.sku.specs.all %}
+                    {{ spec.spec.name }}:
+                    {{ spec.option }}	
+                {% endfor %}
+            {% endif %}
+            
+        </div>
+    </div>
+    <div class="level-right">
+        <div class="level-item pr-6">
+            {% if cart.sku %}
+                {{ cart.num }}{{ cart.spu.product_unit }} x {{ cart.sku.shop_price }}
+            {% else %}
+                {{ cart.num }}{{ cart.spu.product_unit }} x {{ cart.spu.shop_price }}
+            {% endif %}
+        </div>
+        <div class="level-item pl-5">
+            <strong class="has-text-danger-dark is-size-5">{{ money }}</strong>
+        </div>
+    </div>
+</div> 
+{% endfor %}
+{% endblock %}
+
+{% block num %}{{ goods_num }}{% endblock %}
+{% block total %}{{ sum_money }}{% endblock %}
+{% block freight %}3{% endblock %}
+    

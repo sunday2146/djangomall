@@ -94,6 +94,7 @@
         <div class="box is-shadowless has-background-white mt-4">
             <h1 class="is-size-5 mb-2">订单信息:</h1>
             <div class="box is-shadowless border">
+                {% block level-payall %}
                 <div class="level">
                     <div class="level-left">
                         <div class="level-item">
@@ -110,6 +111,7 @@
                             {% endfor %}
                             {% endif %}
                         </div>
+                        
                     </div>
                     <div class="level-right">
                         <div class="level-item pr-6">
@@ -124,21 +126,22 @@
                         </div>
                     </div>
                 </div>
-                
+                {% endblock %}
             </div>
 
             <div class="box has-text-right is-shadowless">
                 <div class="columns">
                     <div class="column is-10">
                         <ul>
-                            <li>{{ cart_product.num }}件商品,总商品金额：</li>
+                            <li>
+                            共{% block num %}{{ cart_product.num }}{% endblock %}件商品,总商品金额：</li>
                             <li>运费：</li>
                         </ul>
                     </div>
                     <div class="column">
                         <ul>
-                            <li class=" has-text-right ">¥{{ total_price }}</li>
-                            <li class=" has-text-right ">¥{{ freight }}</li>
+                            <li class=" has-text-right ">¥{% block total %}{{ total_price }}{% endblock %}</li>
+                            <li class=" has-text-right ">¥{% block freight %}{{ freight }}{% endblock %}</li>
                         </ul>
                     </div>
                 </div>

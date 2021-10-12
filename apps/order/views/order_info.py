@@ -144,3 +144,26 @@ class DmallBuyNowView(HasLoginRequired, BaseView, CreateView):
                 else:
                     raise ValidationError('库存不足！')
         return cart
+
+
+class DmallShopingCartPayAll(HasLoginRequired, BaseView, CreateView):
+    
+    # 购物车批量结算
+    model = DmallOrderInfo
+    form_class = DmallOrderInfoForm
+    template_name = "order/payall.html"
+    # success_url = reverse_lazy('/')
+    success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['address'] = self.get_address()   # 查询到该用户的所有地址
+        context['pay_method'] = DmallOrderInfo.get_pay_method()    # 支付方式数据字典
+        context['pay_default'] = DmallOrderInfo.get_pay_default()  # 默认支付方式
+        return context
+
+    def get_address(self):
+        # 获取该用户添加的地址
+        return DmallAddress.objects.filter(owner=self.request.user, is_del=False)   # 地址
+
+    
