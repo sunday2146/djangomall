@@ -5,3 +5,80 @@
 {% include 'banner.html' %}
 {% include 'component/index_ad.html' %}
 {% endblock %}
+
+{% block section %}
+    <div class="mt-6 mb-6 has-background-success-dark">
+        <div class=" container pt-5 pb-6">
+            <div class="has-text-centered mb-4">
+                <span class="title span has-text-white">精 品 推 荐</span><br>
+                <span class="subtitle span has-text-light">Recommended</span>
+            </div>
+           
+            <div class="columns is-multiline">
+                {% include 'home/jingpin.html' %}
+            </div>
+            
+        </div>
+    </div>
+
+    
+    {% for nav, sub_nav in floor_datas.items %}
+    <div class="container is-fluid1 mt-4 has-background-white">
+        <div class="columns is-gapless is-marginless">
+            <div class="column is-2" style="background: url('{{ MEDIA_URL }}{{ nav.pc_img }}'); background-size:100% 100%;">
+                <div class="is-radiusless is-shadowless p-3 pt-4">
+                    <h1 class="title has-text-white">{{ nav.name }}</h1>
+                    <P class="subtitle has-text-white pt-1"> 应时而采，新鲜特供</P>
+                    <div class="buttons">
+                        {% if sub_nav %}
+                        {% for sub in sub_nav %}
+                            <a class="button is-rounded is-small is-warning is-light">{{ sub }}</a>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="" style="margin-top: 190px;">
+                    <a class="button is-success is-light mt-4 is-fullwidth is-small" href="" style="margin-top: 200px;"> 更多{{ nav.name }} </a>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="column">
+            <a href="">
+                <img class="image" src="https://m.360buyimg.com/babel/jfs/t1/206223/2/8744/65517/6153e218E1aa2a13b/233f2a9948487c51.jpg" style="height: 390px;">
+            </a>
+            </div>
+            <div class="column is-3">
+                sada
+            </div>
+        </div>
+        <div class="box is-shadowless">
+            <div class="columns is-marginless">
+                {% for good in nav.spu %}
+                <div class="column is-2">
+                    <a href=" {% url 'product:product-detail' good.id %} " target="_blank">
+                    <figure class="image is-square">
+                        <img src="{{ MEDIA_URL }}{{ good.image }}" >
+                    </figure>
+    
+                    <h1 class="pt-3 pb-1 has-text-weight-medium is-size-4 has-text-danger-dark is-family-primary">
+                        ¥{{ good.shop_price }}</h1>
+                    <h2 class="is-family-secondary has-text-grey-dark" style="font-size: 14px;">
+                        {{ good.title|truncatechars:13 }}
+                    </h2>
+                    <div class="mt-2 foot">
+                        <div class=" is-pulled-left is-size-7 has-text-grey-light">{{ good.sales }}人付款</div>
+                        <div class=" is-pulled-right is-size-7 has-text-grey-light">5.0分</div>
+                        <div class="is-clearfix"></div>
+                    </div>
+                </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        
+       
+    </div>
+    {% endfor %}
+{% endblock %}
+    

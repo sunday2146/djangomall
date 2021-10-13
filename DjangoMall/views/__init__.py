@@ -10,7 +10,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import View, ListView
 from dadmin.models import Banner
-from product.models import ProductCategory
+from product.models import ProductCategory, ProductSPU, product
 from order.models import DmallShopingCart
 
 
@@ -19,8 +19,7 @@ class BaseView:
     """
     def get_context_data(self, **kwargs):
         context = super(BaseView, self).get_context_data(**kwargs)
-        navs = ProductCategory.get_navs()
-        context['navs'] = navs
+        context['navs'] = ProductCategory.get_navs()
         # print(self.request.user.is_authenticated)
         if self.request.user.is_authenticated:
             context['cart_num'] = DmallShopingCart.get_cart_num(self.request.user)
@@ -38,4 +37,16 @@ class IndexView(BaseView, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['banners'] = Banner.get_banners_json()
+        context['bests'] = ProductSPU.get_best()
+        context['floor_datas'] = self.get_floor_data()
         return context
+
+    def get_floor_data(self):
+        navs = ProductCategory.get_navs()
+        for nav in navs:
+            if nav.parent == None:
+                nav.spu = nav.cat_spu.filter(is_new=True, is_del=False)
+            else:
+                nav.spu = nav.cat1_spu.filter(is_new=True, is_del=False)
+            # print(nav.spu)  商品数据
+        return navs

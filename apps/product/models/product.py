@@ -40,6 +40,19 @@ class ProductSPU(BaseModel):
     def __str__(self):
         return self.title
 
+    @classmethod
+    def get_best(cls):
+        # 获取精品推荐商品
+        queryset = cls.objects.filter(is_best=True, is_del=False, is_show=True)
+        for product in queryset:
+            if product.spec_type == 1:
+                sku = product.skus.filter(is_del=False, is_show=True).first()
+                product.shop_price = sku.shop_price
+                product.market_price = sku.market_price
+                product.cost_price = sku.cost_price
+                product.stock = sku.stock
+        return queryset
+
 
 class ProductSKU(BaseModel):
     """商品SKU"""

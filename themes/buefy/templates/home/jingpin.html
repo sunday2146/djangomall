@@ -1,0 +1,43 @@
+
+{% if bests %}
+
+{% for best in bests %}
+<div class="column is-4">
+    <a href="" class="box">
+        <article class="media">
+            <figure class="media-left">
+            <p class="image is-128x128">
+                <img src="{{ MEDIA_URL }}{{ best.image }}">
+            </p>
+            </figure>
+            <div class="media-content">
+            <div class="content">
+                <h1 class="is-size-6">{{ best.title|truncatechars:15 }}</h1>
+                <p class=" has-text-grey-light is-size">{{ best.sub_title|truncatechars:15 }}</p>
+            </div>
+            <nav class="level is-mobile">
+                <div class="level-left">
+                <p class="level-item is-size-4 has-text-danger-dark">
+                    ¥{{ best.shop_price }}
+                </p>
+                <p class="level-item is-size">
+                    市场价：<span class="is-delete">¥{{ best.market_price }}</span> 
+                </p>
+            </nav>
+                <nav class="level is-mobile" style="margin-top: -10px;">
+                    <div class="level-left">
+                        <p class="level-item is-size-7 has-text-grey-light">{{ best.sales }}人付款</p>
+                    </div>
+                    <div class="level-right">
+                        <p class="level-item is-size-7 has-text-grey-light">5.0分</p>
+                    </div>
+                </nav>
+            </div>
+        </article>
+    </a>
+</div>
+{% endfor %}
+{% else %}
+<p>暂无精品推荐！</p>
+{% endif %}
+    

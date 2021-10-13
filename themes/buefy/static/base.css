@@ -1,6 +1,6 @@
-/* html, body{
-    background-color: rgb(247, 247, 247) !important;
-} */
+html, body{
+    background-color: rgb(240, 240, 247) !important;
+}
 [v-cloak] {
     display: none;
     } 
@@ -48,3 +48,97 @@
 .is-border {
     border: #dbdbdb solid 1px;
 }
+.is-delete {
+    text-decoration: line-through;
+}
+
+
+.cate-tag {
+    margin: 0 9px 9px 0;
+    padding: 0 13px;
+    max-width: 132px;
+    /* height: 35px;
+    line-height: 35px; */
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+    border: 1px solid #ddd;
+    background: none;
+    background: rgba(247,247,251,.2);
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+
+/* 小特效 1 */
+.underline {
+    position: relative;
+}
+.underline::before {
+    content: '';
+    position: absolute;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #3cefff;
+    transform-origin: bottom left;
+    transform: scaleX(1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+.underline:hover::before {
+    transform: scaleX(0);
+    transform-origin: bottom right;
+  }
+
+/* 小特效 2 */
+.highlight {
+    position: relative;
+    z-index: 1;
+  }
+  
+.highlight::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: -0.25em;
+    right: -0.25em;
+    background-color: #820492;
+    transform-origin: bottom center;
+    transform: scaleY(0.1);
+    transition: all 0.1s ease-in-out;
+  }
+  
+.highlight:hover::before {
+    transform: scaleY(1);
+    background-color: hsla(297, 96%, 30%, 0.75);
+    
+  }
+/* 小特效 3 */
+.span {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .span::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: -0.25em;
+    right: -0.25em;
+    background-color: hsla(283, 95%, 44%, 0.75);
+    transform-origin: center right;
+    transform: scaleX(0);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .span:hover::before {
+    transform: scaleX(1);
+    transform-origin: center left;
+  }
