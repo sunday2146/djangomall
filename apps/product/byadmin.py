@@ -10,7 +10,7 @@ from .models import (
 from .inlines_admin import (
     ProductSKUInline, ProductSPUSpecInline, 
     ProductSpecOptionInline, ProductSPUImageInline, 
-    ProductSKUSpecInline) 
+    ProductSKUSpecInline, CategoryADInline) 
 
 
 
@@ -19,6 +19,7 @@ class ProductCategoryAdmin(BaseOwnerAdmin):
                     'is_nav', 'is_show', 'sort', 'operate')
     list_editable = ('is_nav', 'sort',)
     readonly_fields = ('cate_icon',)
+    inlines = [CategoryADInline]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         # 筛选fk字段的下拉菜单数据

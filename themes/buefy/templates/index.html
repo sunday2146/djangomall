@@ -7,6 +7,8 @@
 {% endblock %}
 
 {% block section %}
+
+{% comment %}  
     <div class="mt-6 mb-6 has-background-success-dark">
         <div class=" container pt-5 pb-6">
             <div class="has-text-centered mb-4">
@@ -20,35 +22,37 @@
             
         </div>
     </div>
-
+{% endcomment %}
     
     {% for nav, sub_nav in floor_datas.items %}
     <div class="container is-fluid1 mt-4 has-background-white">
         <div class="columns is-gapless is-marginless">
-            <div class="column is-2" style="background: url('{{ MEDIA_URL }}{{ nav.pc_img }}'); background-size:100% 100%;">
-                <div class="is-radiusless is-shadowless p-3 pt-4">
+            <div class="column is-2" style="background: url('{{ MEDIA_URL }}{{ nav.pc_img }}'); background-size:100% 100%; height: 390px;">
+                <div class="box is-radiusless is-shadowless" style="background: none;">
                     <h1 class="title has-text-white">{{ nav.name }}</h1>
-                    <P class="subtitle has-text-white pt-1"> 应时而采，新鲜特供</P>
-                    <div class="buttons">
-                        {% if sub_nav %}
-                        {% for sub in sub_nav %}
-                            <a class="button is-rounded is-small is-warning is-light">{{ sub }}</a>
-                        {% endfor %}
-                        {% endif %}
+                    <P class="subtitle has-text-white cate-desc">{{ nav.desc }}</P>
+                    <div style="height: 200px;">
+                        <div class="buttons" style="margin-top: -1em;">
+                            {% if sub_nav %}
+                            {% for sub in sub_nav %}
+                                <a class="button is-rounded is-small is-warning is-light" href="{% url 'product:category-detail' sub.id %} ">{{ sub }}</a>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="" style="margin-top: 190px;">
-                    <a class="button is-success is-light mt-4 is-fullwidth is-small" href="" style="margin-top: 200px;"> 更多{{ nav.name }} </a>
-                    </div>
+                    <a class="button is-success is-light mt-4 is-fullwidth is-small" href="{% url 'product:category-detail' nav.id %}"> 更多{{ nav.name }} </a>
                 </div>
-                
             </div>
+            
             <div class="column">
-            <a href="">
-                <img class="image" src="https://m.360buyimg.com/babel/jfs/t1/206223/2/8744/65517/6153e218E1aa2a13b/233f2a9948487c51.jpg" style="height: 390px;">
+            <a href="{{ nav.cate_center.url }}">
+                <img class="image" src="{{ MEDIA_URL }}{{ nav.cate_center.image }}" style="height: 390px;">
             </a>
             </div>
             <div class="column is-3">
-                sada
+                <a href="{{ nav.cate_right.url }}">
+                    <img class="image" src="{{ MEDIA_URL }}{{ nav.cate_right.image }}" style="height: 390px;">
+                </a>
             </div>
         </div>
         <div class="box is-shadowless">

@@ -70,6 +70,22 @@ html, body{
     overflow: hidden;
 }
 
+.cate-desc {
+    position: relative;
+    line-height: 50px !important;
+    top: -10px;
+}
+.cate-desc:after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 4px;
+    background: #fff;
+}
+
+
 
 /* 小特效 1 */
 .underline {

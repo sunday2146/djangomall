@@ -46,7 +46,11 @@ class IndexView(BaseView, ListView):
         for nav in navs:
             if nav.parent == None:
                 nav.spu = nav.cat_spu.filter(is_new=True, is_del=False)
+                nav.cate_ad = nav.categoryad_set.filter(is_del=False)
+                nav.cate_center = nav.cate_ad.first()
+                nav.cate_right = nav.cate_ad.last()
             else:
                 nav.spu = nav.cat1_spu.filter(is_new=True, is_del=False)
             # print(nav.spu)  商品数据
+            # print(nav.cate_ad)  广告位数据
         return navs

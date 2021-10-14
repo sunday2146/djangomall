@@ -38,7 +38,113 @@
 
     
     {% block section %}{% endblock %}
+    
+    
+    {% block footer %}
+    
+  
         
+    
+        
+        <footer class="footer mt-4 has-background-success">
+            <div class="container">
+                {% comment %}
+                <div class="columns">
+                    <div class="column">
+                        asda
+                    </div>
+                    <div class="column">
+                        asda
+                    </div>
+                    <div class="column">
+                        <h1 class="has-text-white is-size-5">购物指南</h1>
+                        <ul class="mt-1">
+                            <li><a class="has-text-success-light is-size" href="">购物流程</a></li>
+                            <li><a class="has-text-success-light is-size" href="">支付方式</a></li>
+                            <li><a class="has-text-success-light is-size" href="">售后规则</a></li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h1>配送方式</h1>
+                    </div>
+                    <div class="column">
+                        <h1>其他说明</h1>
+                    </div>
+                    <div class="column">
+                        <h1>联系客服</h1>
+                    </div>
+                </div>
+                {% endcomment %}
+                <nav class="level is-mobile">
+                    <div class="level-item ">
+                      <span class="icon is-large has-text-white mr-1" style="font-size: 3em;"> 
+                        <i class="mdi mdi-basket-plus"></i></span>
+                      <div class="has-text-success-light">
+                        <p class="heading is-size-6">轻松购物</p>
+                        <p class="title has-text-success-light is-size-5">品种齐全</p>
+                      </div>
+                    </div>
+                    <div class="level-item">
+                        <p class="has-text-centered has-text-success-light">|</p>
+                    </div>
+                    <div class="level-item ">
+                        <span class="icon is-large has-text-white mr-1" style="font-size: 3em;"> 
+                            <i class="mdi mdi-shield-car"></i>
+                            <!-- <i class="mdi mdi-rv-truck"></i> -->
+                        </span>
+                        <div class="has-text-success-light">
+                          <p class="heading is-size-6">多仓直发</p>
+                          <p class="title has-text-success-light is-size-5">极速配送</p>
+                        </div>
+                    </div>
+                    <div class="level-item">
+                        <p class="has-text-centered has-text-success-light">|</p>
+                    </div>
+                    <div class="level-item ">
+                        <span class="icon is-large has-text-white mr-1" style="font-size: 3em;"> 
+                            <i class="mdi mdi-ballot"></i></span>
+                        <div class="has-text-success-light">
+                          <p class="heading is-size-6">精致服务</p>
+                          <p class="title has-text-success-light is-size-5">正品行货</p>
+                        </div>
+                    </div>
+                    <div class="level-item">
+                        <p class="has-text-centered has-text-success-light">|</p>
+                    </div>
+                    <div class="level-item ">
+                        <span class="icon is-large has-text-white mr-1" style="font-size: 3em;"> 
+                            <i class="mdi mdi-wallet-giftcard"></i></span>
+                        <div class="has-text-success-light">
+                          <p class="heading is-size-6">畅选无忧</p>
+                          <p class="title has-text-success-light is-size-5">天天低价</p>
+                        </div>
+                    </div>
+                    <div class="level-item">
+                        <p class="has-text-centered has-text-success-light">|</p>
+                    </div>
+                    <div class="level-item ">
+                        <span class="icon is-large has-text-white mr-1" style="font-size: 3em;"> 
+                            <i class="mdi mdi-hand-heart"></i></span>
+                        <div class="has-text-success-light">
+                          <p class="heading is-size-6">极速退换</p>
+                          <p class="title has-text-success-light is-size-5">无忧售后</p>
+                        </div>
+                    </div>
+                </nav>
+                <div class=" dropdown-divider"></div>
+                <div class="content has-text-centered">
+                    <p style="line-height: 45px;">
+                      <strong>DjangoMall</strong> by <a href="https://www.toutiao.com/c/user/token/MS4wLjABAAAAFV-cysN1jV5BJyuOG8ePvq2wkIcCCyx21nafBCqofig/?source=feed">轻编程</a>. 
+                      本站源码以全部开源，代码托管在Gitee 
+                      <a href='https://gitee.com/xingfugz/django-mall/stargazers'>
+                        <img src='https://gitee.com/xingfugz/django-mall/badge/star.svg?theme=dark' alt='star'></img>
+                    </a>. <br>
+                      本程序基于 <a href="https://www.djangoproject.com/">Django 3.2.7</a>开发.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    {% endblock %}
     {% block extrafoot %}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css">
         <script src="https://unpkg.com/vue"></script>
