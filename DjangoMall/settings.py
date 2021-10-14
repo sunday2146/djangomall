@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-6-966ve85h_iir7*)cebd5hqgxnuv_+%dt3^86hp2^y=1@hl)&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mall.lotdoc.cn']
 
 
 # Application definition
@@ -145,7 +145,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # python manage.py collectstatic
-# STATIC_ROOT = "/var/www/example.com/static/"
+STATIC_ROOT = '/www/wwwroot/mall.lotdoc.cn/djangomall/themes/buefy/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
