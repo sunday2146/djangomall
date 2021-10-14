@@ -13,7 +13,7 @@
 ### 演示地址
 > 程序的整个框架逻辑基本已经完成，一些细节上的小bug还在持续完善！
 
-##### 演示地址：[http://mall.lotdoc.cn/](http://mall.lotdoc.cn/)
+#### 演示地址：[http://mall.lotdoc.cn/](http://mall.lotdoc.cn/)
 
 ###  **你可以用本项目干什么？** 
 
