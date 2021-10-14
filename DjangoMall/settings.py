@@ -145,7 +145,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # python manage.py collectstatic
-STATIC_ROOT = '/www/wwwroot/mall.lotdoc.cn/djangomall/themes/buefy/static/'
+STATIC_ROOT = '/www/wwwroot/mall.lotdoc.cn/django-mall/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

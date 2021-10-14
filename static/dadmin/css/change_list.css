@@ -1,0 +1,34 @@
+/* #changelist table tbody td.action-checkbox,
+.change-list .filtered table tbody th,
+td{
+    vertical-align: middle;
+} */
+
+
+#changelist-form td, th {
+    line-height: 16px;
+    border-bottom: 1px solid var(--hairline-color);
+    vertical-align: middle;
+}
+.field-content label{
+    display: block;
+    float: none;
+}
+.field-content .help{
+    margin-left: 0 !important;
+}
+.ck-content{
+    height: 30em;
+}
+
+/* .inline-group .tabular tr td.original,
+.inline-group .tabular tr.has_original td{
+    vertical-align: top;
+}
+.inline-group .tabular td.original p{
+    padding: 5px 9px;
+} */
+/* .inline-group .tabular tr td.original p{
+    height: 70px;
+    position: relative;
+} */

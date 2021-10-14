@@ -1,11 +1,11 @@
-
+{% load static %}
 <template>
     <b-navbar wrapper-class="container is-fluid1" style="z-index: 1;" 
         type="is-white" shadow spaced transparent>
         {% block navbar-brand %}
         <template #brand>
             <b-navbar-item href="">
-                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+                <img src="{% static 'users/images/logo.png' %}" width="112" height="28">
             </b-navbar-item>
         </template>
         {% endblock %}
