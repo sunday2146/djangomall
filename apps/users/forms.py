@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
+from django.forms import fields
 from django.utils.translation import gettext_lazy as _
 # from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -9,6 +10,7 @@ from django.contrib.auth import (
 from django.contrib.contenttypes.models import ContentType
 from users.models.operate import DmallFavorite
 from users.views.userinfo import User
+from users.models import UserInfo
 
 
 class DmallLoginForm(AuthenticationForm):
@@ -74,3 +76,11 @@ class DmallFavoriteForm(forms.ModelForm):
 
         model = DmallFavorite
         exclude = ('owner', 'is_show', 'content_type')
+        
+
+class UserInfoForm(forms.ModelForm):
+    # UserInfo的表单
+    class Meta:
+        """Meta definition for DmallFavoriteform."""
+        model = UserInfo
+        fields = ('mobile', 'nickname', 'desc', 'avatar', 'signature', 'default_address', )

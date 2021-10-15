@@ -14,7 +14,7 @@ from product.models.product import ProductSPU
 from users.models.models import UserInfo
 from users.models.operate import DmallFavorite, DmallHotSearchWords
 from users.models import DmallAddress
-from users.forms import DmallFavoriteForm
+from users.forms import DmallFavoriteForm, UserInfoForm
 
 
 # 文档：https://docs.djangoproject.com/zh-hans/3.2/topics/class-based-views/intro/#decorating-the-class
@@ -189,7 +189,10 @@ class UserInfoUpdateView(HasLoginRequired, BaseView, UpdateView):
     # 修改用户信息
     model = UserInfo
     template_name = "users/member/edit_user.html"
-    fields = ('mobile', 'nickname', 'desc', 'avatar', 'signature', 'default_address', )
+    form_class = UserInfoForm
+    
+    def get(self, request, *args, **kwargs):
+        return render(request, 'users/member/edit_user.html', {'form': self.get_form_class()})
 
     def get_success_url(self) -> str:
         return reverse('users:member', kwargs={'pk': self.request.user.id})
