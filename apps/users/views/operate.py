@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.forms.forms import Form
 from django.utils.decorators import method_decorator
 from django.db.models import Q, F
-from django.http.response import JsonResponse
-from django.shortcuts import render
+from django.http.response import HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect, render
 from django.urls.base import reverse
 from django.views.generic import View, ListView, CreateView, UpdateView
 from django.contrib.contenttypes.models import ContentType
@@ -185,14 +186,28 @@ class DmallAddressHasDefault(DmallAddressUpdateView):
         return super().form_valid(form)
 
 
-class UserInfoUpdateView(HasLoginRequired, BaseView, UpdateView):
+class UserInfoUpdateView(HasLoginRequired, BaseView, View):
     # 修改用户信息
-    model = UserInfo
-    template_name = "users/member/edit_user.html"
-    form_class = UserInfoForm
-    
     def get(self, request, *args, **kwargs):
-        return render(request, 'users/member/edit_user.html', {'form': self.get_form_class()})
-
-    def get_success_url(self) -> str:
-        return reverse('users:member', kwargs={'pk': self.request.user.id})
+        user = self.request.user
+        if user.userinfo:
+            userinfo = user.userinfo
+            form = UserInfoForm(instance=userinfo)
+        else:
+            form = UserInfoForm()
+        return render(request, 'users/member/edit_user.html', {'form': form})
+    
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.userinfo:
+            userinfo = user.userinfo
+            form = UserInfoForm(request.POST, request.FILES, instance=userinfo)
+        else:
+            form = UserInfoForm()
+        if form.is_valid():
+            new_user = form.save(commit=False)
+            new_user.owner = self.request.user
+            new_user.save()
+            return HttpResponseRedirect(reverse('users:member', kwargs={'pk': self.request.user.id}))
+        else:
+            return JsonResponse({'message': '发生未知错误！'})
