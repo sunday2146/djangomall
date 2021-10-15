@@ -9,8 +9,9 @@
         {% block sub_title %}大道至简，回归本心！{% endblock %}</title>
     {% block seo %}{% endblock %}
     {% block extrahead %}
+    <link rel="shortcut icon" href="{% static 'base/images/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'base.css' %}">
-    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <link rel="stylesheet" href="{% static 'base/css/buefy.min.css' %}">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     {% endblock %}  
 </head>
@@ -130,7 +131,7 @@
                 <div class="content has-text-centered">
                     <p style="line-height: 45px;">
                       <strong>DjangoMall</strong> by <a href="https://www.toutiao.com/c/user/token/MS4wLjABAAAAFV-cysN1jV5BJyuOG8ePvq2wkIcCCyx21nafBCqofig/?source=feed">轻编程</a>. 
-                      本站源码以全部开源，代码托管在Gitee 
+                      本站源码全部开源，代码托管在Gitee 
                       <a href='https://gitee.com/xingfugz/django-mall/stargazers'>
                         <img src='https://gitee.com/xingfugz/django-mall/badge/star.svg?theme=dark' alt='star'></img>
                     </a>. <br>
