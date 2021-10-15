@@ -24,11 +24,13 @@ sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
 SECRET_KEY = 'django-insecure-6-966ve85h_iir7*)cebd5hqgxnuv_+%dt3^86hp2^y=1@hl)&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = ['mall.lotdoc.cn']
-ALLOWED_HOSTS = []
-
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = ['mall.lotdoc.cn', '127.0.0.1']
+ 
 
 # Application definition
 
