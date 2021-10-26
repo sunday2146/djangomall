@@ -176,7 +176,6 @@ class DmallShopingCartPayAll(HasLoginRequired, BaseView, CreateView):
         else:
             return HttpResponse('暂不支持该支付方式')
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['address'] = self.get_address()   # 查询到该用户的所有地址
@@ -208,7 +207,7 @@ class DmallShopingCartPayAll(HasLoginRequired, BaseView, CreateView):
         for cart in carts:
             if cart.spu.spec_type == 1 and cart.sku:
                 if cart.sku.stock < cart.num:
-                    print('库存不足')
+                    # print('库存不足')
                     return JsonResponse({'message': f'{cart.sku}的库存不足'})
                 # print(cart.num)
                 ProductSKU.objects.filter(id=cart.sku.id).update(stock=F('stock') - cart.num)
